@@ -1,0 +1,80 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import TourCard from '@components/TourCard.astro';
+import { client } from '@sanity/lib/client';
+import { allToursQuery } from '@sanity/lib/queries';
+
+// Fetch all published tours
+let tours = [];
+try {
+  tours = await client.fetch(allToursQuery);
+} catch (error) {
+  console.warn('Failed to fetch tours:', error);
+  // Continue with empty tours array - will show empty state
+}
+---
+
+<BaseLayout
+  title="Our Tours"
+  description="Explore South African adventure tours - overlanding, diving, rafting, camping and more with JaJa Tours"
+>
+  <section class="container tours-page">
+    <h1>Our Tours</h1>
+    <p class="intro">
+      Explore our range of South African adventures. From multi-day overlanding
+      expeditions to diving experiences, find the tour that's right for you.
+    </p>
+
+    {tours.length > 0 ? (
+      <div class="tour-grid">
+        {tours.map((tour) => (
+          <TourCard tour={tour} />
+        ))}
+      </div>
+    ) : (
+      <p class="empty-state">No tours available yet. Check back soon!</p>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .tours-page {
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+  }
+
+  .tours-page h1 {
+    margin-bottom: 0.5rem;
+  }
+
+  .intro {
+    margin-bottom: 2rem;
+    color: var(--color-text-light);
+    max-width: 600px;
+  }
+
+  .tour-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .tour-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .tour-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .empty-state {
+    text-align: center;
+    color: var(--color-text-light);
+    padding: 3rem 1rem;
+    font-size: 1.125rem;
+  }
+</style>
