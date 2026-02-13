@@ -1,0 +1,139 @@
+---
+import { urlForImage } from '@sanity/lib/image';
+
+interface Props {
+  tour: {
+    slug: string;
+    title: string;
+    excerpt?: string;
+    mainImage?: {
+      asset: { _ref: string };
+      alt?: string;
+    };
+    pricing?: {
+      amount: number;
+      currency: string;
+      perPerson: boolean;
+    };
+    category?: string;
+    duration?: string;
+  };
+}
+
+const { tour } = Astro.props;
+
+// Format price with currency and per person indicator
+const formattedPrice = tour.pricing
+  ? tour.pricing.currency === 'ZAR'
+    ? `R${tour.pricing.amount}${tour.pricing.perPerson ? ' per person' : ''}`
+    : `${tour.pricing.currency} ${tour.pricing.amount}${tour.pricing.perPerson ? ' per person' : ''}`
+  : null;
+
+// Generate optimized image URL
+const imageUrl = tour.mainImage
+  ? urlForImage(tour.mainImage).width(600).height(400).url()
+  : null;
+
+const imageAlt = tour.mainImage?.alt || tour.title;
+---
+
+<a href={`/tours/${tour.slug}`} class="tour-card">
+  {imageUrl && (
+    <img
+      src={imageUrl}
+      alt={imageAlt}
+      class="tour-card__image"
+      loading="lazy"
+    />
+  )}
+
+  <div class="tour-card__content">
+    <h2 class="tour-card__title">{tour.title}</h2>
+
+    {tour.excerpt && (
+      <p class="tour-card__excerpt">{tour.excerpt}</p>
+    )}
+
+    <div class="tour-card__meta">
+      {tour.category && (
+        <span class="tour-card__category">{tour.category}</span>
+      )}
+
+      {tour.duration && (
+        <span class="tour-card__duration">{tour.duration}</span>
+      )}
+
+      {formattedPrice && (
+        <span class="tour-card__price">{formattedPrice}</span>
+      )}
+    </div>
+  </div>
+</a>
+
+<style>
+  .tour-card {
+    display: block;
+    border: 1px solid rgba(85, 85, 85, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease;
+    text-decoration: none;
+    color: inherit;
+    min-height: 44px;
+    padding: 0;
+  }
+
+  .tour-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .tour-card__image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .tour-card__content {
+    padding: 1rem;
+  }
+
+  .tour-card__title {
+    font-size: 1.25rem;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+    color: var(--color-primary);
+  }
+
+  .tour-card__excerpt {
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--color-text-light);
+    margin-bottom: 1rem;
+  }
+
+  .tour-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    align-items: center;
+  }
+
+  .tour-card__category {
+    background-color: rgba(45, 80, 22, 0.1);
+    color: var(--color-primary);
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  .tour-card__duration {
+    color: var(--color-text-light);
+  }
+
+  .tour-card__price {
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-left: auto;
+  }
+</style>
