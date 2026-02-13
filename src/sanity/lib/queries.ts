@@ -27,7 +27,28 @@ export const tourBySlugQuery = `*[_type == "tour" && slug.current == $slug && !(
   duration,
   groupSize,
   pricing,
-  availableDates,
+  inclusions,
+  exclusions,
+  itinerary[] {
+    dayNumber,
+    title,
+    description,
+    activities,
+    meals,
+    accommodation
+  },
+  safetyInfo {
+    difficultyLevel,
+    fitnessRequirements,
+    risks,
+    equipmentProvided,
+    whatToBring,
+    guideCertifications
+  },
+  availableDates[] {
+    date,
+    spotsAvailable
+  },
   publishedAt
 }`;
 
