@@ -6,20 +6,20 @@ const currentYear = new Date().getFullYear();
   <div class="footer-container">
     <div class="footer-section">
       <h3>JaJa Tours</h3>
-      <p>South African Adventure Awaits</p>
+      <p>Adventure architecture for people who travel to feel alive.</p>
     </div>
 
     <div class="footer-section">
-      <h4>Quick Links</h4>
+      <h4>Explore</h4>
       <ul class="footer-links">
         <li><a href="/tours">Tours</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/contact">Contact</a></li>
+        <li><a href="/about">Our Story</a></li>
+        <li><a href="/contact">Start Planning</a></li>
       </ul>
     </div>
 
     <div class="footer-section">
-      <h4>Contact</h4>
+      <h4>Reach Out</h4>
       <ul class="footer-contact">
         <li>Email: <a href="mailto:info@jajatours.co.za">info@jajatours.co.za</a></li>
         <li>WhatsApp: <a href="https://wa.me/27123456789">+27 12 345 6789</a></li>
@@ -34,36 +34,45 @@ const currentYear = new Date().getFullYear();
 
 <style>
   .footer {
-    background-color: var(--color-bg-dark);
-    color: var(--color-bg);
-    padding: 3rem 0 1rem;
-    margin-top: 4rem;
+    margin-top: 5rem;
+    padding: 4rem 0 1.2rem;
+    color: var(--color-white);
+    background:
+      radial-gradient(circle at 12% -16%, rgba(240, 183, 99, 0.35), transparent 36%),
+      linear-gradient(145deg, #132b3a 0%, #183745 42%, #215364 100%);
   }
 
   .footer-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
+    width: min(1140px, calc(100% - 2.5rem));
+    margin: 0 auto 1rem;
+    padding: 1.2rem;
+    border-radius: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(6px);
     display: grid;
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 1.5rem;
   }
 
   .footer-section h3 {
-    color: var(--color-accent);
+    color: var(--color-sun);
     margin-bottom: 0.5rem;
-    font-size: 1.5rem;
+    font-size: 1.7rem;
   }
 
   .footer-section h4 {
-    color: var(--color-accent);
-    margin-bottom: 0.75rem;
-    font-size: 1.125rem;
+    color: rgba(255, 255, 255, 0.82);
+    margin-bottom: 0.6rem;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
   }
 
   .footer-section p {
-    margin-bottom: 0.5rem;
-    color: var(--color-bg);
+    margin-bottom: 0;
+    color: rgba(255, 255, 255, 0.82);
+    max-width: 34ch;
   }
 
   .footer-links,
@@ -75,39 +84,42 @@ const currentYear = new Date().getFullYear();
 
   .footer-links li,
   .footer-contact li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.45rem;
+    color: rgba(255, 255, 255, 0.8);
   }
 
   .footer a {
-    color: var(--color-bg);
+    color: rgba(255, 255, 255, 0.88);
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: color 0.2s ease, opacity 0.2s ease;
     padding: 0;
     min-height: auto;
   }
 
   .footer a:hover {
-    color: var(--color-accent);
+    color: var(--color-sun);
   }
 
   .footer-bottom {
-    max-width: 1200px;
-    margin: 2rem auto 0;
-    padding: 2rem 1rem 0;
+    width: min(1140px, calc(100% - 2.5rem));
+    margin: 0 auto;
+    padding: 1.6rem 0 0;
     text-align: center;
-    border-top: 1px solid rgba(250, 250, 247, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.24);
   }
 
   .footer-bottom p {
-    color: var(--color-bg);
-    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.74);
+    font-size: 0.84rem;
     margin: 0;
+    letter-spacing: 0.04em;
   }
 
-  /* Desktop layout - 3 columns */
-  @media (min-width: 768px) {
+  @media (min-width: 820px) {
     .footer-container {
       grid-template-columns: repeat(3, 1fr);
+      padding: 1.6rem 1.9rem;
+      gap: 2rem;
     }
   }
 </style>
