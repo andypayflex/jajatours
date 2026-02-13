@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-13)
 ## Current Position
 
 Phase: 3 of 7 (Tour Content)
-Plan: 2 of 5 in current phase
+Plan: 3 of 5 in current phase
 Status: In progress
-Last activity: 2026-02-13 — Completed 03-02-PLAN.md
+Last activity: 2026-02-13 — Completed 03-05-PLAN.md
 
-Progress: [████░░░░░░] 36%
+Progress: [████░░░░░░] 40%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 9
-- Average duration: 3 min
-- Total execution time: 0.50 hours
+- Total plans completed: 10
+- Average duration: 2.8 min
+- Total execution time: 0.52 hours
 
 **By Phase:**
 
@@ -29,11 +29,11 @@ Progress: [████░░░░░░] 36%
 |-------|-------|-------|----------|
 | 1 | 3 | 9 min | 3 min |
 | 2 | 3 | 11 min | 3.7 min |
-| 3 | 3 | 10 min | 3.3 min |
+| 3 | 4 | 12 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-03 (3 min), 03-01 (2 min), 03-03 (2 min), 03-02 (6 min)
-- Trend: Variable - 03-02 took longer due to Sanity config debugging
+- Last 5 plans: 03-01 (2 min), 03-03 (2 min), 03-02 (6 min), 03-05 (2 min)
+- Trend: Stable - Most plans complete in 2-3 minutes
 
 *Updated after each plan completion*
 
@@ -76,6 +76,9 @@ Recent decisions affecting current work:
 - Error-tolerant Sanity fetches with try-catch for graceful handling of unconfigured CMS — 03-02
 - Vite loadEnv for environment variables in astro.config.mjs — 03-02
 - Full-card clickable links for better mobile UX and larger touch targets — 03-02
+- PDFKit for lightweight PDF generation (2MB vs 250MB+ Puppeteer) — 03-05
+- Build-time PDF generation via getStaticPaths for zero runtime overhead — 03-05
+- Built-in Helvetica fonts for PDF typography (no custom font loading) — 03-05
 
 ### Pending Todos
 
@@ -91,7 +94,7 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-13T16:41:52Z
-Stopped at: Completed 03-02-PLAN.md (Tour listing page and TourCard component)
+Last session: 2026-02-13T16:49:37Z
+Stopped at: Completed 03-05-PLAN.md (Downloadable PDF itineraries)
 Resume file: None
 Config: {"mode":"yolo","depth":"standard","parallelization":true,"commit_docs":true,"model_profile":"balanced"}
