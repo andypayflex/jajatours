@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation & Performance** - Fast-loading infrastructure for SA mobile networks
 - [x] **Phase 2: Content Management System** - Non-technical CMS for solo guide updates
-- [ ] **Phase 3: Tour Content** - Complete tour listings with itineraries, pricing, and booking flows
+- [x] **Phase 3: Tour Content** - Complete tour listings with itineraries, pricing, and booking flows
 - [ ] **Phase 4: Visual Content & Media** - Photo galleries, videos, and social feeds
 - [ ] **Phase 5: Communication & Inquiry** - WhatsApp integration and contact forms
 - [ ] **Phase 6: Trust & Social Proof** - Testimonials, reviews, and guide story
@@ -69,11 +69,11 @@ Plans:
 **Plans**: 5 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Extend tour schema and GROQ queries (itinerary, inclusions/exclusions, safety fields)
-- [ ] 03-02-PLAN.md — Tour listing page and TourCard component (responsive grid at /tours)
-- [ ] 03-03-PLAN.md — Custom trip inquiry form with Netlify Forms (/inquiry + success page)
-- [ ] 03-04-PLAN.md — Tour detail page with section components (itinerary, pricing, dates, safety)
-- [ ] 03-05-PLAN.md — PDF itinerary generation with PDFKit (downloadable /tours/{slug}.pdf)
+- [x] 03-01-PLAN.md — Extend tour schema and GROQ queries (itinerary, inclusions/exclusions, safety fields)
+- [x] 03-02-PLAN.md — Tour listing page and TourCard component (responsive grid at /tours)
+- [x] 03-03-PLAN.md — Custom trip inquiry form with Netlify Forms (/inquiry + success page)
+- [x] 03-04-PLAN.md — Tour detail page with section components (itinerary, pricing, dates, safety)
+- [x] 03-05-PLAN.md — PDF itinerary generation with PDFKit (downloadable /tours/{slug}.pdf)
 
 ### Phase 4: Visual Content & Media
 **Goal**: Visitors experience tours visually through high-quality photos, videos, and social content
@@ -140,7 +140,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 |-------|----------------|--------|-----------|
 | 1. Foundation & Performance | 3/3 | Complete | 2026-02-13 |
 | 2. Content Management System | 3/3 | Complete | 2026-02-13 |
-| 3. Tour Content | 0/5 | Not started | - |
+| 3. Tour Content | 5/5 | Complete | 2026-02-13 |
 | 4. Visual Content & Media | 0/TBD | Not started | - |
 | 5. Communication & Inquiry | 0/TBD | Not started | - |
 | 6. Trust & Social Proof | 0/TBD | Not started | - |
