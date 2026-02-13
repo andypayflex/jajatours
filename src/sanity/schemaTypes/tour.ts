@@ -53,6 +53,147 @@ export default defineType({
       title: 'Body',
     }),
     defineField({
+      name: 'itinerary',
+      type: 'array',
+      title: 'Itinerary',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {
+              name: 'dayNumber',
+              type: 'number',
+              title: 'Day Number',
+              validation: (Rule) => Rule.required().min(1),
+            },
+            {
+              name: 'title',
+              type: 'string',
+              title: 'Title',
+              validation: (Rule) => Rule.required(),
+            },
+            {
+              name: 'description',
+              type: 'text',
+              title: 'Description',
+              rows: 4,
+            },
+            {
+              name: 'activities',
+              type: 'array',
+              title: 'Activities',
+              of: [{ type: 'string' }],
+            },
+            {
+              name: 'meals',
+              type: 'object',
+              title: 'Meals',
+              fields: [
+                {
+                  name: 'breakfast',
+                  type: 'boolean',
+                  title: 'Breakfast',
+                },
+                {
+                  name: 'lunch',
+                  type: 'boolean',
+                  title: 'Lunch',
+                },
+                {
+                  name: 'dinner',
+                  type: 'boolean',
+                  title: 'Dinner',
+                },
+              ],
+            },
+            {
+              name: 'accommodation',
+              type: 'string',
+              title: 'Accommodation',
+            },
+          ],
+          preview: {
+            select: {
+              dayNumber: 'dayNumber',
+              title: 'title',
+            },
+            prepare(selection) {
+              const { dayNumber, title } = selection;
+              return {
+                title: `Day ${dayNumber}: ${title}`,
+              };
+            },
+          },
+        },
+      ],
+    }),
+    defineField({
+      name: 'inclusions',
+      type: 'array',
+      title: "What's Included",
+      description: 'List what is included in the tour price',
+      of: [{ type: 'string' }],
+    }),
+    defineField({
+      name: 'exclusions',
+      type: 'array',
+      title: "What's Excluded",
+      description: 'List what is NOT included in the tour price',
+      of: [{ type: 'string' }],
+    }),
+    defineField({
+      name: 'safetyInfo',
+      type: 'object',
+      title: 'Safety Info',
+      fields: [
+        {
+          name: 'difficultyLevel',
+          type: 'string',
+          title: 'Difficulty Level',
+          options: {
+            list: [
+              { title: 'Easy - All fitness levels', value: 'Easy' },
+              { title: 'Moderate - Basic fitness required', value: 'Moderate' },
+              { title: 'Challenging - Good fitness required', value: 'Challenging' },
+              { title: 'Strenuous - Excellent fitness required', value: 'Strenuous' },
+            ],
+          },
+        },
+        {
+          name: 'fitnessRequirements',
+          type: 'text',
+          title: 'Fitness Requirements',
+          rows: 3,
+        },
+        {
+          name: 'risks',
+          type: 'array',
+          title: 'Risks',
+          description: 'List inherent risks',
+          of: [{ type: 'string' }],
+        },
+        {
+          name: 'equipmentProvided',
+          type: 'array',
+          title: 'Equipment Provided',
+          of: [{ type: 'string' }],
+        },
+        {
+          name: 'whatToBring',
+          type: 'array',
+          title: 'What to Bring',
+          of: [{ type: 'string' }],
+        },
+        {
+          name: 'guideCertifications',
+          type: 'text',
+          title: 'Guide Certifications',
+          description: 'e.g. PADI Divemaster, Wilderness First Responder',
+          rows: 2,
+        },
+      ],
+    }),
+    defineField({
       name: 'category',
       type: 'string',
       title: 'Category',
