@@ -49,8 +49,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Performance & Infrastructure
 
-- [ ] **PERF-01**: Site loads in under 3 seconds on 3G mobile connections (<500KB page size)
-- [ ] **PERF-02**: Site is fully mobile-responsive with touch-friendly, mobile-first design
+- [x] **PERF-01**: Site loads in under 3 seconds on 3G mobile connections (<500KB page size)
+- [x] **PERF-02**: Site is fully mobile-responsive with touch-friendly, mobile-first design
 
 ## v2 Requirements
 
@@ -92,8 +92,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| PERF-01 | Phase 1 | Pending |
-| PERF-02 | Phase 1 | Pending |
+| PERF-01 | Phase 1 | Complete |
+| PERF-02 | Phase 1 | Complete |
 | CMS-01 | Phase 2 | Pending |
 | CMS-02 | Phase 2 | Pending |
 | CMS-03 | Phase 2 | Pending |
