@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-13)
 ## Current Position
 
 Phase: 3 of 7 (Tour Content)
-Plan: 0 of TBD in current phase
-Status: Not started
-Last activity: 2026-02-13 — Phase 2 complete, verified
+Plan: 1 of 5 in current phase
+Status: In progress
+Last activity: 2026-02-13 — Completed 03-01-PLAN.md
 
-Progress: [███░░░░░░░] 29%
+Progress: [███░░░░░░░] 33%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6
-- Average duration: 2.7 min
-- Total execution time: 0.33 hours
+- Total plans completed: 7
+- Average duration: 2.6 min
+- Total execution time: 0.37 hours
 
 **By Phase:**
 
@@ -29,10 +29,11 @@ Progress: [███░░░░░░░] 29%
 |-------|-------|-------|----------|
 | 1 | 3 | 9 min | 3 min |
 | 2 | 3 | 11 min | 3.7 min |
+| 3 | 1 | 2 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-03 (2 min), 02-01 (5 min), 02-02 (3 min), 02-03 (3 min)
-- Trend: Consistent 3-5 min execution pace
+- Last 5 plans: 02-01 (5 min), 02-02 (3 min), 02-03 (3 min), 03-01 (2 min)
+- Trend: Accelerating - schema work executes faster than full-stack plans
 
 *Updated after each plan completion*
 
@@ -66,6 +67,9 @@ Recent decisions affecting current work:
 - astro-portabletext library for rendering Sanity rich text in Astro components — 02-03
 - Custom image handler using urlForImage helper with 800px width for Portable Text images — 02-03
 - Netlify webhook documented in config file (not hardcoded for security) — 02-03
+- Tour detail fields positioned after body and before category for logical grouping — 03-01
+- Object-wrapped array pattern for itinerary (avoids Sanity nested array limitation) — 03-01
+- Listing queries remain lightweight, only detail queries project full field sets — 03-01
 
 ### Pending Todos
 
@@ -77,7 +81,7 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-13T15:36:13Z
-Stopped at: Completed 02-03-PLAN.md (Query layer and PortableText complete - Phase 2 complete)
+Last session: 2026-02-13T16:32:53Z
+Stopped at: Completed 03-01-PLAN.md (Tour schema extensions complete)
 Resume file: None
 Config: {"mode":"yolo","depth":"standard","parallelization":true,"commit_docs":true,"model_profile":"balanced","workflow":{"research":true,"plan_check":true,"verifier":true}}
