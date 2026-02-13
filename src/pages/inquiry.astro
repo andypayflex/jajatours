@@ -1,0 +1,42 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import InquiryForm from '@components/InquiryForm.astro';
+import { client } from '@sanity/lib/client';
+import { allToursQuery } from '@sanity/lib/queries';
+
+// Fetch tours for the dropdown
+const tours = await client.fetch(allToursQuery);
+
+// Check for pre-selected tour from URL parameter
+const preselectedTour = Astro.url.searchParams.get('tour') || undefined;
+---
+
+<BaseLayout
+  title="Plan Your Trip"
+  description="Request a custom or private tour with JaJa Tours. Tell us your dream adventure and we'll make it happen."
+>
+  <section class="container inquiry-page">
+    <h1>Plan Your Custom Trip</h1>
+    <p class="intro">
+      Want a private or custom tour experience? Tell us about your dream
+      adventure and we'll create a personalized itinerary just for you. We
+      typically respond within 24 hours.
+    </p>
+    <InquiryForm tours={tours} preselectedTour={preselectedTour} />
+  </section>
+</BaseLayout>
+
+<style>
+  .inquiry-page {
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+    max-width: 600px;
+  }
+
+  .intro {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--color-text-light);
+    margin-bottom: 2rem;
+  }
+</style>

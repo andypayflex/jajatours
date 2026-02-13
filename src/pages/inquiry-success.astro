@@ -1,0 +1,74 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Inquiry Sent"
+  description="Your tour inquiry has been sent successfully"
+>
+  <section class="container success-page">
+    <div class="checkmark">
+      <div class="check-icon"></div>
+    </div>
+    <h1>Thank You!</h1>
+    <p>
+      Your inquiry has been received. We'll get back to you within 24 hours
+      with a personalized tour plan.
+    </p>
+    <p>
+      In the meantime, feel free to browse our tours or reach out on WhatsApp.
+    </p>
+    <a href="/tours" class="btn">Browse Tours</a>
+  </section>
+</BaseLayout>
+
+<style>
+  .success-page {
+    text-align: center;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .checkmark {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #d4f4dd;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .check-icon {
+    width: 16px;
+    height: 32px;
+    border: solid #2D5016;
+    border-width: 0 4px 4px 0;
+    transform: rotate(45deg);
+    margin-bottom: 8px;
+  }
+
+  .btn {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    display: inline-flex;
+    text-decoration: none;
+    margin-top: 1.5rem;
+    transition: background-color 0.2s ease;
+  }
+
+  .btn:hover {
+    background-color: var(--color-primary-light);
+  }
+
+  p {
+    font-size: 1.1rem;
+    color: var(--color-text);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>
