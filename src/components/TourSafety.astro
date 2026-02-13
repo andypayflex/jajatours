@@ -1,0 +1,191 @@
+---
+interface SafetyInfo {
+  difficultyLevel?: string;
+  fitnessRequirements?: string;
+  risks?: string[];
+  equipmentProvided?: string[];
+  whatToBring?: string[];
+  guideCertifications?: string;
+}
+
+interface Props {
+  safetyInfo?: SafetyInfo;
+}
+
+const { safetyInfo } = Astro.props;
+
+// Guard: if no safety info, render nothing
+if (!safetyInfo) {
+  return null;
+}
+
+// Map difficulty levels to display info
+function getDifficultyBadge(level?: string) {
+  if (!level) return null;
+
+  const badgeMap: Record<string, { className: string; label: string }> = {
+    easy: { className: 'difficulty-easy', label: 'Easy' },
+    moderate: { className: 'difficulty-moderate', label: 'Moderate' },
+    challenging: { className: 'difficulty-challenging', label: 'Challenging' },
+    strenuous: { className: 'difficulty-strenuous', label: 'Strenuous' },
+  };
+
+  return badgeMap[level.toLowerCase()] || { className: 'difficulty-moderate', label: level };
+}
+
+const difficultyBadge = getDifficultyBadge(safetyInfo.difficultyLevel);
+---
+
+<section class="tour-section">
+  <h2>Safety & Requirements</h2>
+
+  {difficultyBadge && (
+    <div class="difficulty-wrapper">
+      <h3>Difficulty Level</h3>
+      <span class={`difficulty-badge ${difficultyBadge.className}`}>
+        {difficultyBadge.label}
+      </span>
+    </div>
+  )}
+
+  {safetyInfo.fitnessRequirements && (
+    <div class="safety-subsection">
+      <h3>Fitness Requirements</h3>
+      <p>{safetyInfo.fitnessRequirements}</p>
+    </div>
+  )}
+
+  {safetyInfo.risks && safetyInfo.risks.length > 0 && (
+    <div class="safety-subsection">
+      <h3>Risk Disclosures</h3>
+      <ul class="risk-list">
+        {safetyInfo.risks.map((risk) => (
+          <li>{risk}</li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  {safetyInfo.equipmentProvided && safetyInfo.equipmentProvided.length > 0 && (
+    <div class="safety-subsection">
+      <h3>Equipment Provided</h3>
+      <ul>
+        {safetyInfo.equipmentProvided.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  {safetyInfo.whatToBring && safetyInfo.whatToBring.length > 0 && (
+    <div class="safety-subsection">
+      <h3>What to Bring</h3>
+      <ul>
+        {safetyInfo.whatToBring.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  {safetyInfo.guideCertifications && (
+    <div class="safety-subsection">
+      <h3>Guide Certifications</h3>
+      <p>{safetyInfo.guideCertifications}</p>
+    </div>
+  )}
+</section>
+
+<style>
+  .tour-section {
+    margin-bottom: 3rem;
+  }
+
+  .tour-section h2 {
+    margin-bottom: 1.5rem;
+  }
+
+  .difficulty-wrapper {
+    margin-bottom: 2rem;
+  }
+
+  .difficulty-wrapper h3 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    color: var(--color-text-light);
+  }
+
+  .difficulty-badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .difficulty-easy {
+    background-color: #d4f4dd;
+    color: #166534;
+  }
+
+  .difficulty-moderate {
+    background-color: #dbeafe;
+    color: #1e40af;
+  }
+
+  .difficulty-challenging {
+    background-color: #fef3c7;
+    color: #854d0e;
+  }
+
+  .difficulty-strenuous {
+    background-color: #fee2e2;
+    color: #991b1b;
+  }
+
+  .safety-subsection {
+    margin-bottom: 2rem;
+  }
+
+  .safety-subsection h3 {
+    font-size: 1.125rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .safety-subsection p {
+    line-height: 1.6;
+    color: var(--color-text);
+  }
+
+  .safety-subsection ul {
+    padding-left: 1.5rem;
+    margin: 0;
+  }
+
+  .safety-subsection li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+  }
+
+  .risk-list {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .risk-list li {
+    padding-left: 1.75rem;
+    position: relative;
+  }
+
+  .risk-list li::before {
+    content: '⚠';
+    position: absolute;
+    left: 0;
+    color: #854d0e;
+    font-size: 1rem;
+  }
+</style>

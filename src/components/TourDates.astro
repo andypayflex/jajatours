@@ -1,0 +1,132 @@
+---
+interface DepartureDate {
+  date: string;
+  spotsAvailable: number;
+}
+
+interface Props {
+  dates?: DepartureDate[];
+}
+
+const { dates } = Astro.props;
+
+// Guard: if no dates or empty, render nothing
+if (!dates || dates.length === 0) {
+  return null;
+}
+
+// Format date for display
+function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-ZA', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
+// Determine badge class and text based on availability
+function getBadgeInfo(spotsAvailable: number) {
+  if (spotsAvailable === 0) {
+    return {
+      className: 'badge-soldout',
+      text: 'Sold Out',
+    };
+  } else if (spotsAvailable <= 3) {
+    return {
+      className: 'badge-limited',
+      text: `Limited - ${spotsAvailable} spots left`,
+    };
+  } else {
+    return {
+      className: 'badge-available',
+      text: `Available - ${spotsAvailable} spots`,
+    };
+  }
+}
+---
+
+<section class="tour-section">
+  <h2>Upcoming Departures</h2>
+  <div class="dates-list">
+    {dates.map((departureDate) => {
+      const badge = getBadgeInfo(departureDate.spotsAvailable);
+      return (
+        <div class="date-row">
+          <div class="date-display">{formatDate(departureDate.date)}</div>
+          <div class={`badge ${badge.className}`}>{badge.text}</div>
+        </div>
+      );
+    })}
+  </div>
+</section>
+
+<style>
+  .tour-section {
+    margin-bottom: 3rem;
+  }
+
+  .tour-section h2 {
+    margin-bottom: 1.5rem;
+  }
+
+  .dates-list {
+    border: 1px solid rgba(85, 85, 85, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .date-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(85, 85, 85, 0.1);
+    min-height: 60px;
+  }
+
+  .date-row:last-child {
+    border-bottom: none;
+  }
+
+  .date-display {
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .badge-available {
+    background-color: #d4f4dd;
+    color: #166534;
+  }
+
+  .badge-limited {
+    background-color: #fef3c7;
+    color: #854d0e;
+  }
+
+  .badge-soldout {
+    background-color: #fee2e2;
+    color: #991b1b;
+  }
+
+  @media (max-width: 500px) {
+    .date-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .badge {
+      align-self: flex-start;
+    }
+  }
+</style>

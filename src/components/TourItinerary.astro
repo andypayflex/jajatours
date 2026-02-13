@@ -1,0 +1,171 @@
+---
+interface ItineraryDay {
+  dayNumber: number;
+  title: string;
+  description?: string;
+  activities?: string[];
+  meals?: {
+    breakfast?: boolean;
+    lunch?: boolean;
+    dinner?: boolean;
+  };
+  accommodation?: string;
+}
+
+interface Props {
+  itinerary?: ItineraryDay[];
+}
+
+const { itinerary } = Astro.props;
+
+// Guard: if no itinerary or empty, render nothing
+if (!itinerary || itinerary.length === 0) {
+  return null;
+}
+---
+
+<section class="tour-section">
+  <h2>Day-by-Day Itinerary</h2>
+  <div class="itinerary-list">
+    {itinerary.map((day, index) => (
+      <details class="itinerary-day" open={index === 0}>
+        <summary>
+          <span class="day-label">Day {day.dayNumber}</span>
+          <span class="day-title">{day.title}</span>
+        </summary>
+        <div class="day-content">
+          {day.description && (
+            <p class="day-description">{day.description}</p>
+          )}
+          {day.activities && day.activities.length > 0 && (
+            <div class="day-activities">
+              <h4>Activities:</h4>
+              <ul>
+                {day.activities.map((activity) => (
+                  <li>{activity}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {day.meals && (
+            <div class="day-meals">
+              <strong>Meals: </strong>
+              {[
+                day.meals.breakfast && 'Breakfast',
+                day.meals.lunch && 'Lunch',
+                day.meals.dinner && 'Dinner',
+              ]
+                .filter(Boolean)
+                .join(', ')}
+            </div>
+          )}
+          {day.accommodation && (
+            <div class="day-accommodation">
+              <strong>Accommodation: </strong>
+              {day.accommodation}
+            </div>
+          )}
+        </div>
+      </details>
+    ))}
+  </div>
+</section>
+
+<style>
+  .tour-section {
+    margin-bottom: 3rem;
+  }
+
+  .tour-section h2 {
+    margin-bottom: 1.5rem;
+  }
+
+  .itinerary-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .itinerary-day {
+    border: 1px solid rgba(85, 85, 85, 0.2);
+    border-radius: 4px;
+    margin-bottom: 0;
+    padding: 0;
+  }
+
+  summary {
+    padding: 1rem;
+    min-height: 44px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary:hover {
+    color: var(--color-primary);
+  }
+
+  summary::before {
+    content: '▸';
+    display: inline-block;
+    width: 1rem;
+    transition: transform 0.2s ease;
+  }
+
+  details[open] summary::before {
+    transform: rotate(90deg);
+  }
+
+  .day-label {
+    font-weight: 700;
+    color: var(--color-accent);
+    margin-right: 0.25rem;
+  }
+
+  .day-title {
+    flex: 1;
+  }
+
+  .day-content {
+    padding: 0 1rem 1rem;
+  }
+
+  .day-description {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  .day-activities {
+    margin-bottom: 1rem;
+  }
+
+  .day-activities h4 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .day-activities ul {
+    padding-left: 1.5rem;
+    margin: 0;
+  }
+
+  .day-activities li {
+    margin-bottom: 0.25rem;
+  }
+
+  .day-meals,
+  .day-accommodation {
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+  }
+</style>
