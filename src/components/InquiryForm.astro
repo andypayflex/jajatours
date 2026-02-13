@@ -1,0 +1,211 @@
+---
+interface Props {
+  tours: Array<{ slug: string; title: string }>;
+  preselectedTour?: string;
+}
+
+const { tours, preselectedTour } = Astro.props;
+---
+
+<form
+  name="custom-trip-inquiry"
+  method="POST"
+  action="/inquiry-success"
+  netlify
+  netlify-honeypot="bot-field"
+>
+  <!-- Hidden form-name field for Netlify Forms with Astro -->
+  <input type="hidden" name="form-name" value="custom-trip-inquiry" />
+
+  <!-- Honeypot spam prevention -->
+  <p class="hidden">
+    <label>
+      Don't fill this out if you're human: <input name="bot-field" />
+    </label>
+  </p>
+
+  <!-- Full Name -->
+  <div class="form-field">
+    <label for="name">
+      Full Name <span class="required" aria-label="required">*</span>
+    </label>
+    <input
+      type="text"
+      id="name"
+      name="name"
+      required
+      autocomplete="name"
+    />
+  </div>
+
+  <!-- Email Address -->
+  <div class="form-field">
+    <label for="email">
+      Email Address <span class="required" aria-label="required">*</span>
+    </label>
+    <input
+      type="email"
+      id="email"
+      name="email"
+      required
+      autocomplete="email"
+    />
+  </div>
+
+  <!-- Phone Number (optional) -->
+  <div class="form-field">
+    <label for="phone">
+      Phone Number (optional)
+    </label>
+    <input
+      type="tel"
+      id="phone"
+      name="phone"
+      autocomplete="tel"
+    />
+  </div>
+
+  <!-- Tour Interest -->
+  <div class="form-field">
+    <label for="tour">
+      Tour Interest
+    </label>
+    <select id="tour" name="tour">
+      <option value="">Select a tour...</option>
+      {tours.map((tour) => (
+        <option
+          value={tour.slug}
+          selected={preselectedTour === tour.slug}
+        >
+          {tour.title}
+        </option>
+      ))}
+    </select>
+  </div>
+
+  <!-- Group Size -->
+  <div class="form-field">
+    <label for="groupSize">
+      Group Size
+    </label>
+    <input
+      type="number"
+      id="groupSize"
+      name="groupSize"
+      min="1"
+      max="20"
+    />
+  </div>
+
+  <!-- Preferred Dates -->
+  <div class="form-field">
+    <label for="dates">
+      Preferred Dates
+    </label>
+    <input
+      type="text"
+      id="dates"
+      name="dates"
+      placeholder="e.g. June 2026 or flexible"
+    />
+  </div>
+
+  <!-- Message -->
+  <div class="form-field">
+    <label for="message">
+      Tell us about your ideal trip
+    </label>
+    <textarea
+      id="message"
+      name="message"
+      rows="5"
+    ></textarea>
+  </div>
+
+  <!-- Submit Button -->
+  <button type="submit" class="submit-btn">
+    Send Inquiry
+  </button>
+</form>
+
+<style>
+  .hidden {
+    position: absolute;
+    left: -9999px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+  }
+
+  label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    font-size: 0.875rem;
+    color: var(--color-text);
+  }
+
+  .required {
+    color: #c41e3a;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid rgba(85, 85, 85, 0.3);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 1rem;
+    min-height: 44px;
+    background-color: var(--color-white);
+    color: var(--color-text);
+  }
+
+  textarea {
+    min-height: 132px;
+    resize: vertical;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    border-color: var(--color-primary);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(45, 80, 22, 0.2);
+  }
+
+  .submit-btn {
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 1rem 2rem;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    min-height: 44px;
+  }
+
+  .submit-btn:hover {
+    background-color: var(--color-primary-light);
+  }
+
+  @media (min-width: 768px) {
+    .submit-btn {
+      width: auto;
+      max-width: 300px;
+      align-self: flex-start;
+    }
+  }
+</style>
