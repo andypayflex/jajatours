@@ -66,12 +66,14 @@ Plans:
   4. Visitor can download a PDF itinerary for any tour to share or reference offline
   5. Visitor can see fixed-schedule group tour departure dates with availability indicators
   6. Visitor can request a custom/private trip through a dedicated inquiry form
-**Plans**: TBD
+**Plans**: 5 plans
 
 Plans:
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
-- [ ] 03-03: TBD
+- [ ] 03-01-PLAN.md — Extend tour schema and GROQ queries (itinerary, inclusions/exclusions, safety fields)
+- [ ] 03-02-PLAN.md — Tour listing page and TourCard component (responsive grid at /tours)
+- [ ] 03-03-PLAN.md — Custom trip inquiry form with Netlify Forms (/inquiry + success page)
+- [ ] 03-04-PLAN.md — Tour detail page with section components (itinerary, pricing, dates, safety)
+- [ ] 03-05-PLAN.md — PDF itinerary generation with PDFKit (downloadable /tours/{slug}.pdf)
 
 ### Phase 4: Visual Content & Media
 **Goal**: Visitors experience tours visually through high-quality photos, videos, and social content
@@ -138,7 +140,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 |-------|----------------|--------|-----------|
 | 1. Foundation & Performance | 3/3 | Complete | 2026-02-13 |
 | 2. Content Management System | 3/3 | Complete | 2026-02-13 |
-| 3. Tour Content | 0/TBD | Not started | - |
+| 3. Tour Content | 0/5 | Not started | - |
 | 4. Visual Content & Media | 0/TBD | Not started | - |
 | 5. Communication & Inquiry | 0/TBD | Not started | - |
 | 6. Trust & Social Proof | 0/TBD | Not started | - |
