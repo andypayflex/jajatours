@@ -5,7 +5,13 @@ import { client } from '@sanity/lib/client';
 import { allToursQuery } from '@sanity/lib/queries';
 
 // Fetch tours for the dropdown
-const tours = await client.fetch(allToursQuery);
+let tours = [];
+try {
+  tours = await client.fetch(allToursQuery);
+} catch (error) {
+  console.warn('Failed to fetch tours for inquiry form:', error);
+  // Continue with empty tours array - form will still work
+}
 
 // Check for pre-selected tour from URL parameter
 const preselectedTour = Astro.url.searchParams.get('tour') || undefined;

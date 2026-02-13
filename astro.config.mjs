@@ -1,8 +1,11 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, envField } from 'astro/config';
 
 import sitemap from '@astrojs/sitemap';
 import sanity from '@sanity/astro';
+import { loadEnv } from 'vite';
+
+const { PUBLIC_SANITY_PROJECT_ID = 'abc12345', PUBLIC_SANITY_DATASET = 'production' } = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 
 // https://astro.build/config
 export default defineConfig({
@@ -10,8 +13,8 @@ export default defineConfig({
   integrations: [
     sitemap(),
     sanity({
-      projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID,
-      dataset: import.meta.env.PUBLIC_SANITY_DATASET,
+      projectId: PUBLIC_SANITY_PROJECT_ID,
+      dataset: PUBLIC_SANITY_DATASET,
       apiVersion: '2026-02-13',
       useCdn: false,
     }),
