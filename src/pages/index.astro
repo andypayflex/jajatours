@@ -1,17 +1,217 @@
 ---
-
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { Picture } from 'astro:assets';
+import heroImage from '@assets/images/hero-placeholder.jpg';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="South African Adventure Tours"
+  description="Discover South Africa's best overlanding, diving, rafting and camping tours with JaJa Tours. Book your adventure today."
+>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-image">
+      <Picture
+        src={heroImage}
+        formats={['avif', 'webp']}
+        widths={[400, 800, 1200]}
+        sizes="100vw"
+        quality={80}
+        loading="eager"
+        alt="South African landscape - adventure tourism"
+      />
+    </div>
+    <div class="hero-overlay">
+      <div class="hero-content">
+        <h1>Discover South Africa's Wild Side</h1>
+        <p class="hero-subtitle">Overlanding • Diving • Rafting • Camping</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Intro Section -->
+  <section class="intro">
+    <div class="container">
+      <h2>Welcome to JaJa Tours</h2>
+      <p>Experience the raw beauty of South Africa with expertly guided adventure tours. From the rugged coastlines to the vast wilderness, we bring you face-to-face with nature's most stunning landscapes and thrilling experiences.</p>
+      <p>Whether you're diving with great whites, overlanding through the Drakensberg, or rafting down wild rivers, JaJa Tours delivers unforgettable South African adventures with the personal touch of a passionate local guide.</p>
+      <a href="/tours" class="cta-button">View Our Tours</a>
+    </div>
+  </section>
+
+  <!-- Why JaJa Section -->
+  <section class="why-section">
+    <div class="container">
+      <h2>Why Choose JaJa Tours?</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <h3>Expert Guide</h3>
+          <p>Personal, experienced local guide who knows South Africa inside out. Every tour is led with passion and deep knowledge of the land.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Stunning Locations</h3>
+          <p>Handpicked South African destinations showcasing the country's most breathtaking landscapes and diverse ecosystems.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Small Groups</h3>
+          <p>Intimate, personalized experiences with small group sizes ensuring you get the attention and adventure you deserve.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Hero Section */
+  .hero {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    min-height: 400px;
+    overflow: hidden;
+  }
+
+  .hero-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-image :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-content {
+    text-align: center;
+    color: var(--color-white);
+    padding: 0 1rem;
+    max-width: 800px;
+  }
+
+  .hero-content h1 {
+    font-size: 2rem;
+    color: var(--color-white);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 1rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.125rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    margin: 0;
+  }
+
+  @media (min-width: 768px) {
+    .hero {
+      height: 70vh;
+      min-height: 500px;
+    }
+
+    .hero-content h1 {
+      font-size: 3.5rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.5rem;
+    }
+  }
+
+  /* Intro Section */
+  .intro {
+    padding: 4rem 0;
+  }
+
+  .intro h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .intro p {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1.5rem;
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: var(--color-text-light);
+  }
+
+  .cta-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 4px;
+    margin: 2rem auto;
+    min-height: 44px;
+    transition: background-color 0.2s ease;
+    display: block;
+    width: fit-content;
+  }
+
+  .cta-button:hover {
+    background-color: var(--color-primary-light);
+  }
+
+  /* Why Section */
+  .why-section {
+    padding: 4rem 0;
+    background-color: var(--color-white);
+  }
+
+  .why-section h2 {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .feature-card {
+    padding: 2rem;
+    background-color: var(--color-bg);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .feature-card h3 {
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+  }
+
+  .feature-card p {
+    color: var(--color-text-light);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  @media (min-width: 768px) {
+    .features-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
