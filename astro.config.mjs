@@ -2,11 +2,20 @@
 import { defineConfig } from 'astro/config';
 
 import sitemap from '@astrojs/sitemap';
+import sanity from '@sanity/astro';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://jajatours.co.za',
-  integrations: [sitemap()],
+  integrations: [
+    sitemap(),
+    sanity({
+      projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID,
+      dataset: import.meta.env.PUBLIC_SANITY_DATASET,
+      apiVersion: '2026-02-13',
+      useCdn: false,
+    }),
+  ],
   image: {
     service: {
       entrypoint: 'astro/assets/services/sharp',
@@ -18,7 +27,7 @@ export default defineConfig({
         }
       }
     },
-    domains: ['res.cloudinary.com'],
+    domains: ['res.cloudinary.com', 'cdn.sanity.io'],
     remotePatterns: [{
       protocol: 'https',
     }]
