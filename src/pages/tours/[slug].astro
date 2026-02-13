@@ -1,0 +1,281 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PortableText from '@components/PortableText.astro';
+import TourItinerary from '@components/TourItinerary.astro';
+import TourPricing from '@components/TourPricing.astro';
+import TourDates from '@components/TourDates.astro';
+import TourSafety from '@components/TourSafety.astro';
+import { client } from '@sanity/lib/client';
+import { allToursQuery, tourBySlugQuery } from '@sanity/lib/queries';
+import { urlForImage } from '@sanity/lib/image';
+
+export async function getStaticPaths() {
+  try {
+    const tours = await client.fetch(allToursQuery);
+    return tours.map((tour: any) => ({
+      params: { slug: tour.slug },
+    }));
+  } catch (error) {
+    console.warn('Failed to fetch tours for static paths:', error);
+    return [];
+  }
+}
+
+const { slug } = Astro.params;
+
+// Fetch full tour data using error-tolerant pattern from 03-02
+let tour: any = null;
+try {
+  tour = await client.fetch(tourBySlugQuery, { slug });
+} catch (error) {
+  console.warn(`Failed to fetch tour with slug "${slug}":`, error);
+}
+
+// If tour not found, redirect to tours listing
+if (!tour) {
+  return Astro.redirect('/tours');
+}
+
+// Build hero image URL if mainImage exists
+const heroImageUrl = tour.mainImage
+  ? urlForImage(tour.mainImage).width(1200).height(600).url()
+  : null;
+---
+
+<BaseLayout title={tour.title} description={tour.excerpt || `Discover ${tour.title} with JaJa Tours`}>
+  <!-- Hero Section -->
+  <section class="tour-hero">
+    {heroImageUrl && (
+      <div class="hero-image">
+        <img src={heroImageUrl} alt={tour.title} />
+      </div>
+    )}
+    <div class="container hero-content">
+      <h1>{tour.title}</h1>
+      <div class="tour-meta">
+        {tour.category && (
+          <span class="badge badge-category">{tour.category}</span>
+        )}
+        {tour.duration && (
+          <span class="meta-item">
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            {tour.duration}
+          </span>
+        )}
+        {tour.groupSize && (
+          <span class="meta-item">
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            Max {tour.groupSize} people
+          </span>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <div class="container tour-content">
+    <!-- Tour Description -->
+    {tour.body && (
+      <section class="tour-section">
+        <div class="portable-text">
+          <PortableText value={tour.body} />
+        </div>
+      </section>
+    )}
+
+    <!-- Itinerary Section -->
+    {tour.itinerary && <TourItinerary itinerary={tour.itinerary} />}
+
+    <!-- Pricing Section -->
+    {tour.pricing && (
+      <TourPricing
+        pricing={tour.pricing}
+        inclusions={tour.inclusions}
+        exclusions={tour.exclusions}
+      />
+    )}
+
+    <!-- Departure Dates Section -->
+    {tour.availableDates && <TourDates dates={tour.availableDates} />}
+
+    <!-- Safety & Requirements Section -->
+    {tour.safetyInfo && <TourSafety safetyInfo={tour.safetyInfo} />}
+
+    <!-- Call-to-Action Section -->
+    <section class="tour-section cta-section">
+      <h2>Ready to Book?</h2>
+      <p class="cta-description">
+        Take the next step toward your South African adventure.
+      </p>
+      <div class="cta-buttons">
+        <a href={`/inquiry?tour=${slug}`} class="btn btn-primary">
+          Inquire Now
+        </a>
+        <a href={`/tours/${slug}.pdf`} class="btn btn-secondary" download>
+          Download PDF
+        </a>
+        <a
+          href={`https://wa.me/27123456789?text=Hi%2C%20I'm%20interested%20in%20${encodeURIComponent(tour.title)}`}
+          class="btn btn-secondary"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          WhatsApp Us
+        </a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .tour-hero {
+    position: relative;
+    margin-bottom: 3rem;
+  }
+
+  .hero-image {
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    background-color: var(--color-bg-dark);
+  }
+
+  @media (min-width: 768px) {
+    .hero-image {
+      height: 500px;
+    }
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-content {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .tour-hero h1 {
+    margin-bottom: 1rem;
+  }
+
+  .tour-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.875rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    min-height: 32px;
+  }
+
+  .badge-category {
+    background-color: var(--color-accent);
+    color: var(--color-text);
+  }
+
+  .meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+  }
+
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .tour-content {
+    padding-bottom: 4rem;
+  }
+
+  .tour-section {
+    margin-bottom: 3rem;
+  }
+
+  .tour-section h2 {
+    margin-bottom: 1.5rem;
+  }
+
+  .cta-section {
+    background-color: rgba(45, 80, 22, 0.05);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    margin-top: 4rem;
+  }
+
+  .cta-description {
+    color: var(--color-text-light);
+    margin-bottom: 2rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  @media (min-width: 640px) {
+    .cta-buttons {
+      flex-direction: row;
+      justify-content: center;
+    }
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    min-width: 180px;
+  }
+
+  .btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+  }
+
+  .btn-primary:hover {
+    background-color: var(--color-primary-light);
+  }
+
+  .btn-secondary {
+    background-color: var(--color-white);
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+  }
+</style>
