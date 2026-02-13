@@ -48,11 +48,12 @@ Plans:
   3. Guide can write and publish a blog post with formatting and images
   4. Guide can upload photos to the gallery, and they automatically optimize for web delivery
   5. Guide can add customer testimonials with reviewer photos and tour references
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
+- [ ] 02-01-PLAN.md — Sanity project setup & Astro integration (packages, client, image helpers, env config)
+- [ ] 02-02-PLAN.md — Content schemas & Studio organization (tour, blog, gallery, testimonial schemas + desk structure)
+- [ ] 02-03-PLAN.md — Query layer, PortableText & verification (GROQ queries, rendering components, webhook docs, human CMS verification)
 
 ### Phase 3: Tour Content
 **Goal**: Visitors can browse complete tour offerings and understand what each experience includes
@@ -136,7 +137,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Performance | 3/3 | Complete | 2026-02-13 |
-| 2. Content Management System | 0/TBD | Not started | - |
+| 2. Content Management System | 0/3 | Not started | - |
 | 3. Tour Content | 0/TBD | Not started | - |
 | 4. Visual Content & Media | 0/TBD | Not started | - |
 | 5. Communication & Inquiry | 0/TBD | Not started | - |
