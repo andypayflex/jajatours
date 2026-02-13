@@ -30,6 +30,9 @@ export default defineConfig({
   vite: {
     build: {
       chunkSizeWarningLimit: 600
+    },
+    preview: {
+      allowedHosts: true
     }
   }
 });
