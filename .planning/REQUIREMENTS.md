@@ -92,36 +92,36 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| TOUR-01 | — | Pending |
-| TOUR-02 | — | Pending |
-| TOUR-03 | — | Pending |
-| TOUR-04 | — | Pending |
-| TOUR-05 | — | Pending |
-| TOUR-06 | — | Pending |
-| MEDIA-01 | — | Pending |
-| MEDIA-02 | — | Pending |
-| MEDIA-03 | — | Pending |
-| MEDIA-04 | — | Pending |
-| COMM-01 | — | Pending |
-| COMM-02 | — | Pending |
-| COMM-03 | — | Pending |
-| TRUST-01 | — | Pending |
-| TRUST-02 | — | Pending |
-| SEO-01 | — | Pending |
-| SEO-02 | — | Pending |
-| SEO-03 | — | Pending |
-| CMS-01 | — | Pending |
-| CMS-02 | — | Pending |
-| CMS-03 | — | Pending |
-| CMS-04 | — | Pending |
-| PERF-01 | — | Pending |
-| PERF-02 | — | Pending |
+| PERF-01 | Phase 1 | Pending |
+| PERF-02 | Phase 1 | Pending |
+| CMS-01 | Phase 2 | Pending |
+| CMS-02 | Phase 2 | Pending |
+| CMS-03 | Phase 2 | Pending |
+| CMS-04 | Phase 2 | Pending |
+| TOUR-01 | Phase 3 | Pending |
+| TOUR-02 | Phase 3 | Pending |
+| TOUR-03 | Phase 3 | Pending |
+| TOUR-04 | Phase 3 | Pending |
+| TOUR-05 | Phase 3 | Pending |
+| TOUR-06 | Phase 3 | Pending |
+| MEDIA-01 | Phase 4 | Pending |
+| MEDIA-02 | Phase 4 | Pending |
+| MEDIA-03 | Phase 4 | Pending |
+| MEDIA-04 | Phase 4 | Pending |
+| COMM-01 | Phase 5 | Pending |
+| COMM-02 | Phase 5 | Pending |
+| COMM-03 | Phase 5 | Pending |
+| TRUST-01 | Phase 6 | Pending |
+| TRUST-02 | Phase 6 | Pending |
+| SEO-01 | Phase 7 | Pending |
+| SEO-02 | Phase 7 | Pending |
+| SEO-03 | Phase 7 | Pending |
 
 **Coverage:**
 - v1 requirements: 24 total
-- Mapped to phases: 0
-- Unmapped: 24 (awaiting roadmap creation)
+- Mapped to phases: 24
+- Unmapped: 0 (100% coverage achieved)
 
 ---
 *Requirements defined: 2026-02-13*
-*Last updated: 2026-02-13 after initial definition*
+*Last updated: 2026-02-13 after roadmap creation*
