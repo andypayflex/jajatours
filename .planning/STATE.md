@@ -5,14 +5,14 @@
 See: .planning/PROJECT.md (updated 2026-02-13)
 
 **Core value:** Visitors can find a tour that excites them and easily inquire to book it — the site converts browsers into leads.
-**Current focus:** Phase 2 - Content Management System
+**Current focus:** Phase 3 - Tour Content
 
 ## Current Position
 
-Phase: 2 of 7 (Content Management System)
-Plan: 3 of 3 in current phase (Phase 2 complete)
-Status: Phase complete
-Last activity: 2026-02-13 — Completed 02-03-PLAN.md (Query layer and PortableText)
+Phase: 3 of 7 (Tour Content)
+Plan: 0 of TBD in current phase
+Status: Not started
+Last activity: 2026-02-13 — Phase 2 complete, verified
 
 Progress: [███░░░░░░░] 29%
 

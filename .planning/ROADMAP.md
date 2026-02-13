@@ -13,7 +13,7 @@ This roadmap transforms JaJa Tours' existing content (photos, tour descriptions,
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation & Performance** - Fast-loading infrastructure for SA mobile networks
-- [ ] **Phase 2: Content Management System** - Non-technical CMS for solo guide updates
+- [x] **Phase 2: Content Management System** - Non-technical CMS for solo guide updates
 - [ ] **Phase 3: Tour Content** - Complete tour listings with itineraries, pricing, and booking flows
 - [ ] **Phase 4: Visual Content & Media** - Photo galleries, videos, and social feeds
 - [ ] **Phase 5: Communication & Inquiry** - WhatsApp integration and contact forms
@@ -51,9 +51,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Sanity project setup & Astro integration (packages, client, image helpers, env config)
-- [ ] 02-02-PLAN.md — Content schemas & Studio organization (tour, blog, gallery, testimonial schemas + desk structure)
-- [ ] 02-03-PLAN.md — Query layer, PortableText & verification (GROQ queries, rendering components, webhook docs, human CMS verification)
+- [x] 02-01-PLAN.md — Sanity project setup & Astro integration (packages, client, image helpers, env config)
+- [x] 02-02-PLAN.md — Content schemas & Studio organization (tour, blog, gallery, testimonial schemas + desk structure)
+- [x] 02-03-PLAN.md — Query layer, PortableText & verification (GROQ queries, rendering components, webhook docs, human CMS verification)
 
 ### Phase 3: Tour Content
 **Goal**: Visitors can browse complete tour offerings and understand what each experience includes
@@ -137,7 +137,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Performance | 3/3 | Complete | 2026-02-13 |
-| 2. Content Management System | 0/3 | Not started | - |
+| 2. Content Management System | 3/3 | Complete | 2026-02-13 |
 | 3. Tour Content | 0/TBD | Not started | - |
 | 4. Visual Content & Media | 0/TBD | Not started | - |
 | 5. Communication & Inquiry | 0/TBD | Not started | - |

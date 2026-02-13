@@ -42,10 +42,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Content Management
 
-- [ ] **CMS-01**: Guide can add, edit, and remove tours including pricing, dates, and photos without a developer
-- [ ] **CMS-02**: Guide can write and publish blog posts independently
-- [ ] **CMS-03**: Guide can upload and organize gallery photos with automatic image optimization
-- [ ] **CMS-04**: Guide can add and edit customer testimonials/reviews
+- [x] **CMS-01**: Guide can add, edit, and remove tours including pricing, dates, and photos without a developer
+- [x] **CMS-02**: Guide can write and publish blog posts independently
+- [x] **CMS-03**: Guide can upload and organize gallery photos with automatic image optimization
+- [x] **CMS-04**: Guide can add and edit customer testimonials/reviews
 
 ### Performance & Infrastructure
 
@@ -94,10 +94,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 |-------------|-------|--------|
 | PERF-01 | Phase 1 | Complete |
 | PERF-02 | Phase 1 | Complete |
-| CMS-01 | Phase 2 | Pending |
-| CMS-02 | Phase 2 | Pending |
-| CMS-03 | Phase 2 | Pending |
-| CMS-04 | Phase 2 | Pending |
+| CMS-01 | Phase 2 | Complete |
+| CMS-02 | Phase 2 | Complete |
+| CMS-03 | Phase 2 | Complete |
+| CMS-04 | Phase 2 | Complete |
 | TOUR-01 | Phase 3 | Pending |
 | TOUR-02 | Phase 3 | Pending |
 | TOUR-03 | Phase 3 | Pending |
