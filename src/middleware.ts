@@ -5,7 +5,8 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const { pathname } = context.url;
 
   // Protect all /admin routes except /admin/login
-  if (pathname.startsWith('/admin') && pathname !== '/admin/login') {
+  const cleanPath = pathname.replace(/\/+$/, '') || '/';
+  if (cleanPath.startsWith('/admin') && cleanPath !== '/admin/login') {
     const sessionId = context.cookies.get('session')?.value;
     if (!sessionId || !validateSession(sessionId)) {
       return context.redirect('/admin/login');
