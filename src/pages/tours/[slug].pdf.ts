@@ -1,21 +1,9 @@
-import type { APIRoute, GetStaticPaths } from 'astro';
+import type { APIRoute } from 'astro';
 import PDFDocument from 'pdfkit';
-import { client } from '../../sanity/lib/client';
-import { allToursQuery, tourBySlugQuery } from '../../sanity/lib/queries';
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  try {
-    const tours = await client.fetch(allToursQuery);
-    return tours.map((tour: any) => ({
-      params: { slug: tour.slug },
-    }));
-  } catch {
-    return [];
-  }
-};
+import { getTourBySlug } from '@db/queries/tours.js';
 
 export const GET: APIRoute = async ({ params }) => {
-  const tour = await client.fetch(tourBySlugQuery, { slug: params.slug });
+  const tour = getTourBySlug(params.slug!);
   if (!tour) {
     return new Response('Tour not found', { status: 404 });
   }
@@ -81,7 +69,7 @@ export const GET: APIRoute = async ({ params }) => {
     doc.fontSize(16).font('Helvetica-Bold').fillColor('#2D5016').text('Day-by-Day Itinerary');
     doc.moveDown(0.5);
 
-    tour.itinerary.forEach((day: any) => {
+    tour.itinerary.forEach((day) => {
       doc.fontSize(13).font('Helvetica-Bold').fillColor('#D4A843').text(`Day ${day.dayNumber}: ${day.title}`);
       doc.moveDown(0.2);
 

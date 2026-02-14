@@ -1,0 +1,73 @@
+---
+import AdminLayout from '@layouts/AdminLayout.astro';
+import { getAllContactSubmissions, getAllInquirySubmissions } from '@db/queries/submissions.js';
+
+const contacts = getAllContactSubmissions();
+const inquiries = getAllInquirySubmissions();
+---
+
+<AdminLayout title="Submissions">
+  <div class="admin-header">
+    <h1>Submissions</h1>
+  </div>
+
+  <h2 style="margin-bottom:1rem">Contact Messages ({contacts.length})</h2>
+  {contacts.length > 0 ? (
+    <table class="admin-table" style="margin-bottom:2rem">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Interest</th>
+          <th>Message</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {contacts.map(c => (
+          <tr>
+            <td>{c.name}</td>
+            <td><a href={`mailto:${c.email}`}>{c.email}</a></td>
+            <td>{c.interest || '—'}</td>
+            <td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{c.message || '—'}</td>
+            <td>{c.createdAt ? new Date(c.createdAt).toLocaleDateString() : '—'}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <div class="admin-card" style="margin-bottom:2rem"><p>No contact messages yet.</p></div>
+  )}
+
+  <h2 style="margin-bottom:1rem">Tour Inquiries ({inquiries.length})</h2>
+  {inquiries.length > 0 ? (
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Tour</th>
+          <th>Group</th>
+          <th>Dates</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {inquiries.map(i => (
+          <tr>
+            <td>{i.name}</td>
+            <td><a href={`mailto:${i.email}`}>{i.email}</a></td>
+            <td>{i.phone || '—'}</td>
+            <td>{i.tour || '—'}</td>
+            <td>{i.groupSize || '—'}</td>
+            <td>{i.dates || '—'}</td>
+            <td>{i.createdAt ? new Date(i.createdAt).toLocaleDateString() : '—'}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <div class="admin-card"><p>No tour inquiries yet.</p></div>
+  )}
+</AdminLayout>

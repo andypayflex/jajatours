@@ -1,45 +1,21 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
-import PortableText from '@components/PortableText.astro';
+import MarkdownContent from '@components/MarkdownContent.astro';
 import TourItinerary from '@components/TourItinerary.astro';
 import TourPricing from '@components/TourPricing.astro';
 import TourDates from '@components/TourDates.astro';
 import TourSafety from '@components/TourSafety.astro';
-import { client } from '@sanity/lib/client';
-import { allToursQuery, tourBySlugQuery } from '@sanity/lib/queries';
-import { urlForImage } from '@sanity/lib/image';
-
-export async function getStaticPaths() {
-  try {
-    const tours = await client.fetch(allToursQuery);
-    return tours.map((tour: any) => ({
-      params: { slug: tour.slug },
-    }));
-  } catch (error) {
-    console.warn('Failed to fetch tours for static paths:', error);
-    return [];
-  }
-}
+import { getTourBySlug } from '@db/queries/tours.js';
+import { getImageUrl } from '@db/image.js';
 
 const { slug } = Astro.params;
+const tour = getTourBySlug(slug!);
 
-// Fetch full tour data using error-tolerant pattern from 03-02
-let tour: any = null;
-try {
-  tour = await client.fetch(tourBySlugQuery, { slug });
-} catch (error) {
-  console.warn(`Failed to fetch tour with slug "${slug}":`, error);
-}
-
-// If tour not found, redirect to tours listing
 if (!tour) {
   return Astro.redirect('/tours');
 }
 
-// Build hero image URL if mainImage exists
-const heroImageUrl = tour.mainImage
-  ? urlForImage(tour.mainImage).width(1200).height(600).url()
-  : null;
+const heroImageUrl = getImageUrl(tour.mainImage);
 ---
 
 <BaseLayout title={tour.title} description={tour.excerpt || `Discover ${tour.title} with JaJa Tours`}>
@@ -47,7 +23,7 @@ const heroImageUrl = tour.mainImage
   <section class="tour-hero">
     {heroImageUrl && (
       <div class="hero-image">
-        <img src={heroImageUrl} alt={tour.title} />
+        <img src={heroImageUrl} alt={tour.mainImageAlt || tour.title} />
       </div>
     )}
     <div class="container hero-content">
@@ -73,7 +49,7 @@ const heroImageUrl = tour.mainImage
               <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
               <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
             </svg>
-            Max {tour.groupSize} people
+            Max {tour.groupSize.max} people
           </span>
         )}
       </div>
@@ -85,9 +61,7 @@ const heroImageUrl = tour.mainImage
     <!-- Tour Description -->
     {tour.body && (
       <section class="tour-section">
-        <div class="portable-text">
-          <PortableText value={tour.body} />
-        </div>
+        <MarkdownContent content={tour.body} />
       </section>
     )}
 

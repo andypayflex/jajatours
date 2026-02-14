@@ -1,0 +1,35 @@
+---
+import AdminLayout from '@layouts/AdminLayout.astro';
+import { getAllGalleryImages } from '@db/queries/gallery.js';
+import { getImageUrl } from '@db/image.js';
+
+const images = getAllGalleryImages();
+---
+
+<AdminLayout title="Gallery">
+  <div class="admin-header">
+    <h1>Gallery</h1>
+    <a href="/admin/gallery/new" class="btn btn-primary">Upload Image</a>
+  </div>
+
+  {images.length > 0 ? (
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem">
+      {images.map(img => {
+        const url = getImageUrl(img.image);
+        return (
+          <a href={`/admin/gallery/${img.id}`} class="admin-card" style="padding:0;overflow:hidden;text-decoration:none;color:inherit">
+            {url && <img src={url} alt={img.alt} style="width:100%;height:150px;object-fit:cover" />}
+            <div style="padding:0.75rem">
+              <strong style="font-size:0.85rem">{img.alt}</strong>
+              {img.tourTitle && <div style="font-size:0.8rem;color:var(--admin-text-light)">{img.tourTitle}</div>}
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  ) : (
+    <div class="admin-card">
+      <p>No gallery images yet. <a href="/admin/gallery/new">Upload your first image.</a></p>
+    </div>
+  )}
+</AdminLayout>

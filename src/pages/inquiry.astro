@@ -1,19 +1,9 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
 import InquiryForm from '@components/InquiryForm.astro';
-import { client } from '@sanity/lib/client';
-import { allToursQuery } from '@sanity/lib/queries';
+import { getAllTours } from '@db/queries/tours.js';
 
-// Fetch tours for the dropdown
-let tours = [];
-try {
-  tours = await client.fetch(allToursQuery);
-} catch (error) {
-  console.warn('Failed to fetch tours for inquiry form:', error);
-  // Continue with empty tours array - form will still work
-}
-
-// Check for pre-selected tour from URL parameter
+const tours = getAllTours();
 const preselectedTour = Astro.url.searchParams.get('tour') || undefined;
 ---
 

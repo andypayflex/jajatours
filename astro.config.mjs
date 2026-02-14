@@ -1,23 +1,17 @@
 // @ts-check
-import { defineConfig, envField } from 'astro/config';
-
+import { defineConfig } from 'astro/config';
+import node from '@astrojs/node';
 import sitemap from '@astrojs/sitemap';
-import sanity from '@sanity/astro';
-import { loadEnv } from 'vite';
-
-const { PUBLIC_SANITY_PROJECT_ID = 'abc12345', PUBLIC_SANITY_DATASET = 'production' } = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://jajatours.co.za',
+  output: 'server',
+  adapter: node({
+    mode: 'standalone',
+  }),
   integrations: [
     sitemap(),
-    sanity({
-      projectId: PUBLIC_SANITY_PROJECT_ID,
-      dataset: PUBLIC_SANITY_DATASET,
-      apiVersion: '2026-02-13',
-      useCdn: false,
-    }),
   ],
   image: {
     service: {
@@ -30,10 +24,6 @@ export default defineConfig({
         }
       }
     },
-    domains: ['res.cloudinary.com', 'cdn.sanity.io'],
-    remotePatterns: [{
-      protocol: 'https',
-    }]
   },
   build: {
     inlineStylesheets: 'auto',

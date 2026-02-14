@@ -3,9 +3,14 @@
 ---
 <nav class="nav">
   <div class="nav-container">
-    <a href="/" class="nav-logo">JaJa Tours</a>
+    <a href="/" class="nav-logo">
+      <span class="nav-logo-mark">JT</span>
+      <span class="nav-logo-copy">
+        <strong>JaJa Tours</strong>
+        <small>Southern Africa</small>
+      </span>
+    </a>
 
-    <!-- CSS-only hamburger toggle (no JavaScript) -->
     <input type="checkbox" id="nav-toggle" class="nav-toggle" />
     <label for="nav-toggle" class="nav-hamburger" aria-label="Toggle navigation">
       <span class="nav-hamburger-line"></span>
@@ -15,8 +20,9 @@
 
     <ul class="nav-menu">
       <li><a href="/tours" class="nav-link">Tours</a></li>
-      <li><a href="/about" class="nav-link">About</a></li>
+      <li><a href="/about" class="nav-link">Story</a></li>
       <li><a href="/contact" class="nav-link">Contact</a></li>
+      <li><a href="/contact" class="nav-link nav-link-cta">Plan a Trip</a></li>
     </ul>
   </div>
 </nav>
@@ -24,63 +30,96 @@
 <style>
   .nav {
     position: sticky;
-    top: 0;
-    background-color: var(--color-white);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
+    top: 0.75rem;
+    z-index: 1200;
+    margin-bottom: 0.85rem;
   }
 
   .nav-container {
-    max-width: 1200px;
+    width: min(1140px, calc(100% - 1.3rem));
     margin: 0 auto;
-    padding: 0 1rem;
+    min-height: 68px;
+    border-radius: 999px;
+    padding: 0.6rem 1.1rem;
+    border: 1px solid rgba(18, 36, 51, 0.14);
+    background: rgba(255, 253, 248, 0.82);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 12px 24px rgba(18, 36, 51, 0.11);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    min-height: 64px;
+    gap: 1rem;
+    position: relative;
   }
 
   .nav-logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--color-primary);
-    text-decoration: none;
-    padding: 0.5rem 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    min-height: 44px;
   }
 
-  .nav-logo:hover {
-    color: var(--color-primary-light);
+  .nav-logo-mark {
+    height: 42px;
+    width: 42px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--color-deep), var(--color-reef));
+    color: var(--color-white);
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.03em;
   }
 
-  /* Hide checkbox */
+  .nav-logo-copy {
+    display: grid;
+    line-height: 1.05;
+  }
+
+  .nav-logo-copy strong {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.03rem;
+    letter-spacing: -0.02em;
+  }
+
+  .nav-logo-copy small {
+    font-size: 0.68rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+  }
+
   .nav-toggle {
     display: none;
   }
 
-  /* Hamburger icon - Mobile only */
   .nav-hamburger {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
+    align-items: center;
+    gap: 0.28rem;
     width: 44px;
     height: 44px;
-    padding: 10px;
+    border-radius: 50%;
+    border: 1px solid rgba(18, 36, 51, 0.17);
+    background: var(--color-white);
     cursor: pointer;
-    background: transparent;
-    border: none;
   }
 
   .nav-hamburger-line {
-    width: 24px;
-    height: 3px;
-    background-color: var(--color-primary);
-    transition: all 0.3s ease;
+    width: 20px;
+    height: 2.5px;
     border-radius: 2px;
+    background: var(--color-ink);
+    transition: transform 190ms ease, opacity 190ms ease;
   }
 
-  /* Hamburger animation */
   .nav-toggle:checked ~ .nav-hamburger .nav-hamburger-line:nth-child(1) {
-    transform: translateY(7px) rotate(45deg);
+    transform: translateY(5.8px) rotate(45deg);
   }
 
   .nav-toggle:checked ~ .nav-hamburger .nav-hamburger-line:nth-child(2) {
@@ -88,75 +127,90 @@
   }
 
   .nav-toggle:checked ~ .nav-hamburger .nav-hamburger-line:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg);
+    transform: translateY(-5.8px) rotate(-45deg);
   }
 
-  /* Mobile menu */
   .nav-menu {
     position: absolute;
-    top: 64px;
+    top: calc(100% + 0.5rem);
     left: 0;
     right: 0;
-    background-color: var(--color-white);
-    display: flex;
-    flex-direction: column;
     list-style: none;
-    padding: 0;
+    padding: 0.7rem;
     margin: 0;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
+    border-radius: 20px;
+    border: 1px solid rgba(18, 36, 51, 0.13);
+    background: rgba(255, 253, 248, 0.96);
+    box-shadow: var(--shadow-soft);
+    display: grid;
+    gap: 0.22rem;
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition: opacity 190ms ease, transform 190ms ease;
   }
 
   .nav-toggle:checked ~ .nav-menu {
-    max-height: 300px;
-  }
-
-  .nav-menu li {
-    border-bottom: 1px solid var(--color-bg);
-  }
-
-  .nav-menu li:last-child {
-    border-bottom: none;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
   }
 
   .nav-link {
-    display: block;
-    padding: 1rem 1.5rem;
-    color: var(--color-text);
-    text-decoration: none;
     min-height: 44px;
+    border-radius: 10px;
+    padding: 0.55rem 0.8rem;
     display: flex;
     align-items: center;
-    transition: background-color 0.2s ease;
+    justify-content: center;
+    font-weight: 500;
+    color: var(--color-ink);
   }
 
   .nav-link:hover {
-    background-color: var(--color-bg);
-    color: var(--color-primary);
+    background: rgba(31, 79, 94, 0.08);
   }
 
-  /* Desktop styles */
-  @media (min-width: 768px) {
+  .nav-link-cta {
+    background: linear-gradient(125deg, #194857, #2f8f9d);
+    color: var(--color-white);
+  }
+
+  .nav-link-cta:hover {
+    background: linear-gradient(125deg, #173f4c, #287f8b);
+  }
+
+  @media (min-width: 860px) {
+    .nav-container {
+      width: min(1160px, calc(100% - 2.4rem));
+      padding: 0.65rem 0.9rem 0.65rem 1.1rem;
+    }
+
     .nav-hamburger {
       display: none;
     }
 
     .nav-menu {
       position: static;
-      flex-direction: row;
-      max-height: none;
-      box-shadow: none;
-      gap: 0.5rem;
-    }
-
-    .nav-menu li {
+      opacity: 1;
+      transform: none;
+      pointer-events: auto;
+      display: flex;
+      align-items: center;
+      gap: 0.28rem;
+      background: transparent;
       border: none;
+      box-shadow: none;
+      padding: 0;
     }
 
     .nav-link {
-      padding: 0.5rem 1rem;
+      padding-inline: 1rem;
+    }
+
+    .nav-link-cta {
+      margin-left: 0.5rem;
+      box-shadow: 0 10px 18px rgba(31, 79, 94, 0.22);
     }
   }
 </style>

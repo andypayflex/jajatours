@@ -1,217 +1,474 @@
 ---
+export const prerender = true;
+
 import BaseLayout from '@layouts/BaseLayout.astro';
 import { Picture } from 'astro:assets';
-import heroImage from '@assets/images/hero-placeholder.jpg';
+import heroImage from '@assets/images/hero-kilimanjaro.jpg';
 ---
 
 <BaseLayout
   title="South African Adventure Tours"
   description="Discover South Africa's best overlanding, diving, rafting and camping tours with JaJa Tours. Book your adventure today."
 >
-  <!-- Hero Section -->
   <section class="hero">
-    <div class="hero-image">
-      <Picture
-        src={heroImage}
-        formats={['avif', 'webp']}
-        widths={[400, 800, 1200]}
-        sizes="100vw"
-        quality={80}
-        loading="eager"
-        alt="South African landscape - adventure tourism"
-      />
-    </div>
-    <div class="hero-overlay">
-      <div class="hero-content">
-        <h1>Discover South Africa's Wild Side</h1>
-        <p class="hero-subtitle">Overlanding • Diving • Rafting • Camping</p>
+    <div class="container hero-shell">
+      <div class="hero-copy">
+        <span class="section-label">Adventure Studio</span>
+        <h1>Design your next South African story with us.</h1>
+        <p>
+          JaJa builds high-energy routes across coast, canyon, and wild reserve.
+          Every trip is handcrafted around movement, scenery, and local rhythm.
+        </p>
+        <div class="hero-actions">
+          <a href="/tours" class="button-primary">Browse Journeys</a>
+          <a href="/contact" class="button-secondary">Build My Itinerary</a>
+        </div>
+        <dl class="hero-stats">
+          <div>
+            <dt>120+</dt>
+            <dd>Custom routes launched</dd>
+          </div>
+          <div>
+            <dt>9</dt>
+            <dd>Provinces covered</dd>
+          </div>
+          <div>
+            <dt>4.9</dt>
+            <dd>Average guest rating</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-image">
+          <Picture
+            src={heroImage}
+            formats={['avif', 'webp']}
+            widths={[500, 900, 1400]}
+            sizes="(min-width: 960px) 45vw, 100vw"
+            quality={82}
+            loading="eager"
+            alt="Traveler celebrating on a road with Kilimanjaro in the background"
+          />
+        </div>
+        <div class="hero-badge badge-primary">
+          <strong>Live Guide</strong>
+          <span>Every route led by local experts</span>
+        </div>
+        <div class="hero-badge badge-secondary">
+          <strong>Small Teams</strong>
+          <span>Max 10 travelers per departure</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Intro Section -->
   <section class="intro">
-    <div class="container">
-      <h2>Welcome to JaJa Tours</h2>
-      <p>Experience the raw beauty of South Africa with expertly guided adventure tours. From the rugged coastlines to the vast wilderness, we bring you face-to-face with nature's most stunning landscapes and thrilling experiences.</p>
-      <p>Whether you're diving with great whites, overlanding through the Drakensberg, or rafting down wild rivers, JaJa Tours delivers unforgettable South African adventures with the personal touch of a passionate local guide.</p>
-      <a href="/tours" class="cta-button">View Our Tours</a>
+    <div class="container intro-grid">
+      <div class="intro-story">
+        <span class="section-label">Why JaJa</span>
+        <h2>Not a package tour. A route with pulse.</h2>
+        <p>
+          We combine overlanding, water, and wilderness into one coherent travel
+          rhythm. You move fast where it matters, then slow down where the views
+          hit hardest.
+        </p>
+        <p>
+          We scout every stop personally, tune logistics around real conditions,
+          and keep groups tight so each day feels personal, not scripted.
+        </p>
+      </div>
+
+      <div class="intro-panels">
+        <article>
+          <h3>Terrain Intelligence</h3>
+          <p>
+            Routes are sequenced by season, road state, and marine conditions so
+            every activity lands at the right time.
+          </p>
+        </article>
+        <article>
+          <h3>Human-Scale Groups</h3>
+          <p>
+            Fewer travelers means faster transitions, deeper local interaction,
+            and more spontaneous moments.
+          </p>
+        </article>
+        <article>
+          <h3>Adventure + Comfort</h3>
+          <p>
+            You still get high-adrenaline days, but with smart camp selection,
+            reliable kit, and seamless support.
+          </p>
+        </article>
+      </div>
     </div>
   </section>
 
-  <!-- Why JaJa Section -->
-  <section class="why-section">
+  <section class="experiences">
     <div class="container">
-      <h2>Why Choose JaJa Tours?</h2>
-      <div class="features-grid">
-        <div class="feature-card">
-          <h3>Expert Guide</h3>
-          <p>Personal, experienced local guide who knows South Africa inside out. Every tour is led with passion and deep knowledge of the land.</p>
-        </div>
-        <div class="feature-card">
-          <h3>Stunning Locations</h3>
-          <p>Handpicked South African destinations showcasing the country's most breathtaking landscapes and diverse ecosystems.</p>
-        </div>
-        <div class="feature-card">
-          <h3>Small Groups</h3>
-          <p>Intimate, personalized experiences with small group sizes ensuring you get the attention and adventure you deserve.</p>
-        </div>
+      <span class="section-label">Signature Modes</span>
+      <h2>Choose your movement style</h2>
+      <div class="experience-grid">
+        <article class="experience-card">
+          <h3>Overland Tracks</h3>
+          <p>Highland passes, safari corridors, and long-road camp sunsets.</p>
+          <a href="/tours">Explore Overlanding</a>
+        </article>
+        <article class="experience-card">
+          <h3>Bluewater Missions</h3>
+          <p>Dive windows, surf camps, and coastlines tuned to swell and tide.</p>
+          <a href="/tours">Explore Water Routes</a>
+        </article>
+        <article class="experience-card">
+          <h3>River + Canyon</h3>
+          <p>Whitewater sessions and ravine hikes with controlled pace shifts.</p>
+          <a href="/tours">Explore River Runs</a>
+        </article>
+        <article class="experience-card">
+          <h3>Wild Camp Nights</h3>
+          <p>Quiet fire circles, clear skies, and remote basecamps near reserves.</p>
+          <a href="/tours">Explore Camp Escapes</a>
+        </article>
       </div>
+    </div>
+  </section>
+
+  <section class="timeline">
+    <div class="container timeline-shell">
+      <span class="section-label">Journey Shape</span>
+      <h2>How a JaJa expedition flows</h2>
+      <ol>
+        <li>
+          <strong>Brief + Mapping</strong>
+          <p>We align on challenge level, duration, and preferred landscapes.</p>
+        </li>
+        <li>
+          <strong>Route Design</strong>
+          <p>We propose a day-by-day arc with options and weather contingencies.</p>
+        </li>
+        <li>
+          <strong>Field Run</strong>
+          <p>Guides coordinate logistics live while you focus on the experience.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container cta-shell">
+      <h2>Ready to make your first move?</h2>
+      <p>Tell us your dates and energy level. We will return a route concept within 48 hours.</p>
+      <a href="/contact" class="button-primary">Start Planning</a>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  /* Hero Section */
   .hero {
+    padding: 0.7rem 0 4.2rem;
+  }
+
+  .hero-shell {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.6rem;
+    align-items: center;
+  }
+
+  .hero-copy h1 {
+    margin: 0.95rem 0 1.05rem;
+    max-width: 13ch;
+  }
+
+  .hero-copy p {
+    max-width: 48ch;
+  }
+
+  .hero-actions {
+    margin-top: 1.55rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .hero-stats {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    background: var(--color-card);
+    border: 1px solid var(--color-card-border);
+    box-shadow: var(--shadow-soft);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.8rem;
+  }
+
+  .hero-stats dt {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    color: var(--color-deep);
+  }
+
+  .hero-stats dd {
+    margin: 0.2rem 0 0;
+    font-size: 0.82rem;
+    color: var(--color-ink-soft);
+  }
+
+  .hero-visual {
     position: relative;
-    width: 100%;
-    height: 60vh;
-    min-height: 400px;
-    overflow: hidden;
+    min-height: 300px;
   }
 
   .hero-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-strong);
+    border: 1px solid rgba(18, 36, 51, 0.2);
   }
 
   .hero-image :global(img) {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    min-height: 380px;
   }
 
-  .hero-overlay {
+  .hero-badge {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 0.7rem 0.9rem;
+    border-radius: 12px;
+    display: grid;
+    gap: 0.22rem;
+    max-width: 220px;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid rgba(18, 36, 51, 0.15);
+    backdrop-filter: blur(10px);
   }
 
-  .hero-content {
-    text-align: center;
-    color: var(--color-white);
-    padding: 0 1rem;
-    max-width: 800px;
+  .hero-badge strong {
+    font-size: 0.88rem;
+    font-family: 'Syne', sans-serif;
+    letter-spacing: 0.02em;
   }
 
-  .hero-content h1 {
-    font-size: 2rem;
-    color: var(--color-white);
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    margin-bottom: 1rem;
+  .hero-badge span {
+    font-size: 0.75rem;
+    color: var(--color-ink-soft);
   }
 
-  .hero-subtitle {
-    font-size: 1.125rem;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-    margin: 0;
+  .badge-primary {
+    top: -12px;
+    right: 16px;
+    background: rgba(255, 255, 255, 0.9);
   }
 
-  @media (min-width: 768px) {
-    .hero {
-      height: 70vh;
-      min-height: 500px;
-    }
-
-    .hero-content h1 {
-      font-size: 3.5rem;
-    }
-
-    .hero-subtitle {
-      font-size: 1.5rem;
-    }
+  .badge-secondary {
+    bottom: -16px;
+    left: 12px;
+    background: rgba(247, 240, 228, 0.93);
   }
 
-  /* Intro Section */
   .intro {
-    padding: 4rem 0;
+    padding: 2rem 0 0.8rem;
   }
 
-  .intro h2 {
-    text-align: center;
-    margin-bottom: 2rem;
+  .intro-grid {
+    display: grid;
+    gap: 1.4rem;
+    grid-template-columns: 1fr;
   }
 
-  .intro p {
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 1.5rem;
-    font-size: 1.125rem;
-    line-height: 1.7;
-    color: var(--color-text-light);
+  .intro-story h2 {
+    margin: 0.85rem 0 1rem;
+    max-width: 16ch;
   }
 
-  .cta-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--color-primary);
-    color: var(--color-white);
-    padding: 1rem 2rem;
-    font-size: 1.125rem;
-    font-weight: 600;
-    text-decoration: none;
-    border-radius: 4px;
-    margin: 2rem auto;
-    min-height: 44px;
-    transition: background-color 0.2s ease;
-    display: block;
-    width: fit-content;
+  .intro-story p + p {
+    margin-top: 0.9rem;
   }
 
-  .cta-button:hover {
-    background-color: var(--color-primary-light);
-  }
-
-  /* Why Section */
-  .why-section {
-    padding: 4rem 0;
-    background-color: var(--color-white);
-  }
-
-  .why-section h2 {
-    text-align: center;
-    margin-bottom: 3rem;
-  }
-
-  .features-grid {
+  .intro-panels {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 0.8rem;
   }
 
-  .feature-card {
-    padding: 2rem;
-    background-color: var(--color-bg);
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  .intro-panels article {
+    padding: 1.1rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-card-border);
+    background: rgba(255, 255, 255, 0.74);
+    box-shadow: 0 10px 24px rgba(18, 36, 51, 0.08);
   }
 
-  .feature-card h3 {
-    color: var(--color-primary);
-    margin-bottom: 1rem;
+  .intro-panels h3 {
+    margin-bottom: 0.45rem;
+    font-size: 1.2rem;
   }
 
-  .feature-card p {
-    color: var(--color-text-light);
+  .intro-panels p {
     margin: 0;
-    line-height: 1.6;
   }
 
-  @media (min-width: 768px) {
-    .features-grid {
-      grid-template-columns: repeat(3, 1fr);
+  .experiences {
+    padding: 2rem 0;
+  }
+
+  .experiences h2 {
+    margin: 0.7rem 0 1.1rem;
+    max-width: 12ch;
+  }
+
+  .experience-grid {
+    display: grid;
+    gap: 0.9rem;
+    grid-template-columns: 1fr;
+  }
+
+  .experience-card {
+    padding: 1.3rem;
+    border-radius: var(--radius-md);
+    background: linear-gradient(160deg, rgba(255, 253, 248, 0.86), rgba(246, 251, 251, 0.77));
+    border: 1px solid var(--color-card-border);
+    box-shadow: 0 10px 26px rgba(18, 36, 51, 0.11);
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .experience-card a {
+    font-weight: 600;
+    color: var(--color-deep);
+  }
+
+  .timeline {
+    padding: 1rem 0 2.5rem;
+  }
+
+  .timeline-shell {
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 1rem;
+    background:
+      linear-gradient(145deg, rgba(31, 79, 94, 0.92), rgba(34, 96, 108, 0.88)),
+      radial-gradient(circle at 80% 20%, rgba(240, 183, 99, 0.35), transparent 34%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .timeline-shell .section-label {
+    background: rgba(255, 255, 255, 0.14);
+    color: rgba(255, 255, 255, 0.95);
+  }
+
+  .timeline-shell h2 {
+    margin: 0.8rem 0 1.1rem;
+    color: var(--color-white);
+  }
+
+  .timeline ol {
+    list-style: none;
+    display: grid;
+    gap: 0.75rem;
+    padding: 0;
+  }
+
+  .timeline li {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 14px;
+    padding: 0.9rem;
+  }
+
+  .timeline strong {
+    font-family: 'Syne', sans-serif;
+    display: inline-block;
+    margin-bottom: 0.35rem;
+  }
+
+  .timeline p {
+    margin: 0;
+  }
+
+  .cta-band {
+    padding: 0.6rem 0 0;
+  }
+
+  .cta-shell {
+    border-radius: var(--radius-lg);
+    padding: 1.6rem 1rem;
+    text-align: center;
+    border: 1px solid rgba(18, 36, 51, 0.15);
+    background:
+      radial-gradient(circle at 85% 10%, rgba(240, 183, 99, 0.45), transparent 34%),
+      linear-gradient(158deg, rgba(255, 253, 248, 0.96), rgba(239, 249, 250, 0.86));
+    box-shadow: var(--shadow-soft);
+  }
+
+  .cta-shell h2 {
+    margin-bottom: 0.7rem;
+  }
+
+  .cta-shell p {
+    margin: 0 auto 1.1rem;
+    max-width: 46ch;
+  }
+
+  @media (min-width: 760px) {
+    .hero {
+      padding-top: 0.75rem;
+    }
+
+    .hero-shell {
+      gap: 2.5rem;
+    }
+
+    .hero-stats {
+      max-width: 520px;
+      padding: 1rem 1.15rem;
+    }
+
+    .intro-panels {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .experience-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .timeline-shell {
+      padding: 2rem 1.4rem;
+    }
+
+    .timeline ol {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.9rem;
+    }
+
+    .cta-shell {
+      padding: 2.1rem 1.4rem;
+    }
+  }
+
+  @media (min-width: 980px) {
+    .hero-shell {
+      grid-template-columns: minmax(0, 1.03fr) minmax(0, 0.96fr);
+    }
+
+    .hero-copy {
+      padding-right: 1rem;
+    }
+
+    .intro-grid {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+      align-items: start;
+      gap: 1.6rem;
+    }
+
+    .intro-panels {
+      grid-template-columns: 1fr;
+    }
+
+    .timeline-shell {
+      padding: 2.2rem 1.8rem;
     }
   }
 </style>

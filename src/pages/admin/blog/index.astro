@@ -1,0 +1,40 @@
+---
+import AdminLayout from '@layouts/AdminLayout.astro';
+import { getAllBlogPosts } from '@db/queries/blog.js';
+
+const posts = getAllBlogPosts();
+---
+
+<AdminLayout title="Blog Posts">
+  <div class="admin-header">
+    <h1>Blog Posts</h1>
+    <a href="/admin/blog/new" class="btn btn-primary">New Post</a>
+  </div>
+
+  {posts.length > 0 ? (
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Published</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {posts.map(post => (
+          <tr>
+            <td><a href={`/admin/blog/${post.id}`}>{post.title}</a></td>
+            <td>{post.publishedAt ? new Date(post.publishedAt).toLocaleDateString() : '—'}</td>
+            <td>
+              <a href={`/admin/blog/${post.id}`} class="btn btn-secondary btn-sm">Edit</a>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <div class="admin-card">
+      <p>No blog posts yet. <a href="/admin/blog/new">Create your first post.</a></p>
+    </div>
+  )}
+</AdminLayout>

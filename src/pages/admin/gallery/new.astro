@@ -1,0 +1,76 @@
+---
+import AdminLayout from '@layouts/AdminLayout.astro';
+import { createGalleryImage } from '@db/queries/gallery.js';
+import { getAllTours } from '@db/queries/tours.js';
+import { saveUpload } from '../../../db/uploads.js';
+
+const tours = getAllTours();
+let error = '';
+
+if (Astro.request.method === 'POST') {
+  try {
+    const form = await Astro.request.formData();
+    const imageFile = form.get('image') as File;
+    if (!imageFile || imageFile.size === 0) throw new Error('Image is required.');
+
+    const upload = await saveUpload(imageFile);
+    const parseList = (val: string | null): string[] | undefined => {
+      if (!val) return undefined;
+      const items = val.split('\n').map(s => s.trim()).filter(Boolean);
+      return items.length > 0 ? items : undefined;
+    };
+
+    const img = createGalleryImage({
+      image: upload.path,
+      alt: (form.get('alt') as string) || 'Gallery image',
+      caption: (form.get('caption') as string) || undefined,
+      tourId: (form.get('tourId') as string) || undefined,
+      tags: parseList(form.get('tags') as string),
+    });
+    return Astro.redirect(`/admin/gallery/${img.id}?saved=1`);
+  } catch (e: any) {
+    error = e.message;
+  }
+}
+---
+
+<AdminLayout title="Upload Gallery Image">
+  <div class="admin-header">
+    <h1>Upload Gallery Image</h1>
+    <a href="/admin/gallery" class="btn btn-secondary">Back</a>
+  </div>
+
+  {error && <div class="alert alert-error">{error}</div>}
+
+  <form method="POST" enctype="multipart/form-data" class="admin-card">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="image">Image *</label>
+        <input type="file" id="image" name="image" accept="image/*" required />
+      </div>
+      <div class="form-group">
+        <label for="alt">Alt Text *</label>
+        <input type="text" id="alt" name="alt" required />
+      </div>
+      <div class="form-group">
+        <label for="caption">Caption</label>
+        <input type="text" id="caption" name="caption" />
+      </div>
+      <div class="form-group">
+        <label for="tourId">Tour</label>
+        <select id="tourId" name="tourId">
+          <option value="">None</option>
+          {tours.map(t => <option value={t.id}>{t.title}</option>)}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="tags">Tags (one per line)</label>
+        <textarea id="tags" name="tags" rows="2"></textarea>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Upload</button>
+        <a href="/admin/gallery" class="btn btn-secondary">Cancel</a>
+      </div>
+    </div>
+  </form>
+</AdminLayout>

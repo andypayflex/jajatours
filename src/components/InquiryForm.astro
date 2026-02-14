@@ -8,15 +8,9 @@ const { tours, preselectedTour } = Astro.props;
 ---
 
 <form
-  name="custom-trip-inquiry"
   method="POST"
-  action="/inquiry-success"
-  netlify
-  netlify-honeypot="bot-field"
+  action="/api/inquiry"
 >
-  <!-- Hidden form-name field for Netlify Forms with Astro -->
-  <input type="hidden" name="form-name" value="custom-trip-inquiry" />
-
   <!-- Honeypot spam prevention -->
   <p class="hidden">
     <label>

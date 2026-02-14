@@ -1,23 +1,9 @@
 ---
-import { urlForImage } from '@sanity/lib/image';
+import { getImageUrl } from '@db/image.js';
+import type { Tour } from '@db/types.js';
 
 interface Props {
-  tour: {
-    slug: string;
-    title: string;
-    excerpt?: string;
-    mainImage?: {
-      asset: { _ref: string };
-      alt?: string;
-    };
-    pricing?: {
-      amount: number;
-      currency: string;
-      perPerson: boolean;
-    };
-    category?: string;
-    duration?: string;
-  };
+  tour: Tour;
 }
 
 const { tour } = Astro.props;
@@ -29,12 +15,9 @@ const formattedPrice = tour.pricing
     : `${tour.pricing.currency} ${tour.pricing.amount}${tour.pricing.perPerson ? ' per person' : ''}`
   : null;
 
-// Generate optimized image URL
-const imageUrl = tour.mainImage
-  ? urlForImage(tour.mainImage).width(600).height(400).url()
-  : null;
-
-const imageAlt = tour.mainImage?.alt || tour.title;
+// Image URL from local uploads
+const imageUrl = getImageUrl(tour.mainImage);
+const imageAlt = tour.mainImageAlt || tour.title;
 ---
 
 <a href={`/tours/${tour.slug}`} class="tour-card">

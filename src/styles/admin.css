@@ -1,0 +1,368 @@
+/* Admin Portal Styles */
+*, *::before, *::after { box-sizing: border-box; margin: 0; }
+
+:root {
+  --admin-bg: #f4f6f8;
+  --admin-sidebar: #1a2332;
+  --admin-primary: #2f8f9d;
+  --admin-primary-hover: #267a86;
+  --admin-text: #1a2332;
+  --admin-text-light: #5f6d7e;
+  --admin-border: #e0e4e8;
+  --admin-card: #ffffff;
+  --admin-danger: #dc2626;
+  --admin-danger-hover: #b91c1c;
+  --admin-success: #16a34a;
+}
+
+body {
+  font-family: 'Outfit', 'Segoe UI', sans-serif;
+  background: var(--admin-bg);
+  color: var(--admin-text);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* Layout */
+.admin-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+.admin-sidebar {
+  background: var(--admin-sidebar);
+  color: #fff;
+  padding: 1.5rem 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-sidebar-brand {
+  padding: 0 1.25rem 1.25rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 0.75rem;
+}
+
+.admin-sidebar-brand h2 {
+  font-size: 1.15rem;
+  color: #fff;
+}
+
+.admin-sidebar-brand small {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.5);
+}
+
+.admin-nav {
+  list-style: none;
+  padding: 0;
+  flex: 1;
+}
+
+.admin-nav a {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 1.25rem;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: background 0.15s, color 0.15s;
+}
+
+.admin-nav a:hover, .admin-nav a.active {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+
+.admin-sidebar-footer {
+  padding: 0.75rem 1.25rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.admin-sidebar-footer a {
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.admin-sidebar-footer a:hover { color: #fff; }
+
+/* Main content */
+.admin-main {
+  padding: 2rem;
+  max-width: 1100px;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.admin-header h1 {
+  font-size: 1.5rem;
+}
+
+/* Cards */
+.admin-card {
+  background: var(--admin-card);
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+/* Dashboard stats */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: var(--admin-card);
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  padding: 1.25rem;
+  text-align: center;
+}
+
+.stat-card .stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--admin-primary);
+}
+
+.stat-card .stat-label {
+  font-size: 0.85rem;
+  color: var(--admin-text-light);
+}
+
+/* Tables */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--admin-card);
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.admin-table th {
+  background: #f8fafc;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--admin-text-light);
+}
+
+.admin-table tr:last-child td { border-bottom: none; }
+.admin-table tr:hover td { background: #f8fafc; }
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  font-family: inherit;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.btn-primary {
+  background: var(--admin-primary);
+  color: #fff;
+}
+.btn-primary:hover { background: var(--admin-primary-hover); }
+
+.btn-danger {
+  background: var(--admin-danger);
+  color: #fff;
+}
+.btn-danger:hover { background: var(--admin-danger-hover); }
+
+.btn-secondary {
+  background: #fff;
+  color: var(--admin-text);
+  border: 1px solid var(--admin-border);
+}
+.btn-secondary:hover { background: #f4f6f8; }
+
+.btn-sm {
+  padding: 0.35rem 0.7rem;
+  font-size: 0.8rem;
+}
+
+/* Forms */
+.form-grid {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--admin-text);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--admin-border);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--admin-text);
+  background: #fff;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--admin-primary);
+  box-shadow: 0 0 0 3px rgba(47,143,157,0.15);
+}
+
+.form-group textarea { min-height: 120px; resize: vertical; }
+.form-group small { color: var(--admin-text-light); font-size: 0.8rem; }
+
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+}
+
+/* Dynamic list items (itinerary days, inclusions, etc.) */
+.dynamic-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dynamic-list-item {
+  display: flex;
+  gap: 0.5rem;
+  align-items: start;
+}
+
+.dynamic-list-item input,
+.dynamic-list-item textarea {
+  flex: 1;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--admin-border);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+.dynamic-list-item .btn-remove {
+  padding: 0.45rem 0.6rem;
+  background: none;
+  border: 1px solid var(--admin-border);
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--admin-danger);
+  font-size: 0.9rem;
+}
+
+.dynamic-list-item .btn-remove:hover { background: #fee2e2; }
+
+.btn-add {
+  align-self: flex-start;
+  padding: 0.4rem 0.75rem;
+  background: none;
+  border: 1px dashed var(--admin-border);
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.85rem;
+  color: var(--admin-primary);
+}
+
+.btn-add:hover { background: #f0fafb; border-color: var(--admin-primary); }
+
+/* Itinerary day card */
+.itinerary-day-card {
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  background: #fafbfc;
+}
+
+.itinerary-day-card h4 {
+  margin-bottom: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Alerts */
+.alert {
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.alert-success { background: #d1fae5; color: #065f46; }
+.alert-error { background: #fee2e2; color: #991b1b; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+  .admin-sidebar {
+    position: static;
+    height: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0.75rem;
+  }
+  .admin-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+  .admin-sidebar-brand { border-bottom: none; padding-bottom: 0.5rem; }
+  .form-row { grid-template-columns: 1fr; }
+}

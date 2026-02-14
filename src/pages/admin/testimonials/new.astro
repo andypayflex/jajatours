@@ -1,0 +1,84 @@
+---
+import AdminLayout from '@layouts/AdminLayout.astro';
+import { createTestimonial } from '@db/queries/testimonials.js';
+import { getAllTours } from '@db/queries/tours.js';
+import { saveUpload } from '../../../db/uploads.js';
+
+const tours = getAllTours();
+let error = '';
+
+if (Astro.request.method === 'POST') {
+  try {
+    const form = await Astro.request.formData();
+
+    let customerPhoto: string | undefined;
+    const photoFile = form.get('customerPhoto') as File | null;
+    if (photoFile && photoFile.size > 0) {
+      const upload = await saveUpload(photoFile);
+      customerPhoto = upload.path;
+    }
+
+    const t = createTestimonial({
+      customerName: form.get('customerName') as string,
+      customerPhoto,
+      quote: form.get('quote') as string,
+      rating: parseInt(form.get('rating') as string) || 5,
+      tourId: (form.get('tourId') as string) || undefined,
+    });
+    return Astro.redirect(`/admin/testimonials/${t.id}?saved=1`);
+  } catch (e: any) {
+    error = e.message;
+  }
+}
+---
+
+<AdminLayout title="New Testimonial">
+  <div class="admin-header">
+    <h1>New Testimonial</h1>
+    <a href="/admin/testimonials" class="btn btn-secondary">Back</a>
+  </div>
+
+  {error && <div class="alert alert-error">{error}</div>}
+
+  <form method="POST" enctype="multipart/form-data" class="admin-card">
+    <div class="form-grid">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="customerName">Customer Name *</label>
+          <input type="text" id="customerName" name="customerName" required />
+        </div>
+        <div class="form-group">
+          <label for="rating">Rating *</label>
+          <select id="rating" name="rating" required>
+            <option value="5">5 Stars</option>
+            <option value="4">4 Stars</option>
+            <option value="3">3 Stars</option>
+            <option value="2">2 Stars</option>
+            <option value="1">1 Star</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="quote">Quote *</label>
+        <textarea id="quote" name="quote" rows="4" required></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="customerPhoto">Customer Photo</label>
+          <input type="file" id="customerPhoto" name="customerPhoto" accept="image/*" />
+        </div>
+        <div class="form-group">
+          <label for="tourId">Tour</label>
+          <select id="tourId" name="tourId">
+            <option value="">None</option>
+            {tours.map(t => <option value={t.id}>{t.title}</option>)}
+          </select>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a href="/admin/testimonials" class="btn btn-secondary">Cancel</a>
+      </div>
+    </div>
+  </form>
+</AdminLayout>

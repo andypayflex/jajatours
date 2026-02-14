@@ -1,0 +1,84 @@
+---
+import { marked } from 'marked';
+
+interface Props {
+  content: string;
+}
+
+const { content } = Astro.props;
+const html = marked(content);
+---
+
+<div class="markdown-content" set:html={html} />
+
+<style>
+  :global(.markdown-content) {
+    line-height: 1.6;
+  }
+
+  :global(.markdown-content h2) {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  :global(.markdown-content h3) {
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+
+  :global(.markdown-content p) {
+    margin-bottom: 1rem;
+  }
+
+  :global(.markdown-content strong) {
+    font-weight: bold;
+  }
+
+  :global(.markdown-content em) {
+    font-style: italic;
+  }
+
+  :global(.markdown-content a) {
+    color: var(--color-deep, #1f4f5e);
+    text-decoration: underline;
+  }
+
+  :global(.markdown-content a:hover) {
+    color: var(--color-sun, #f0b763);
+  }
+
+  :global(.markdown-content ul) {
+    margin: 1rem 0;
+    padding-left: 2rem;
+    list-style-type: disc;
+  }
+
+  :global(.markdown-content ol) {
+    margin: 1rem 0;
+    padding-left: 2rem;
+    list-style-type: decimal;
+  }
+
+  :global(.markdown-content li) {
+    margin-bottom: 0.5rem;
+  }
+
+  :global(.markdown-content img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+  }
+
+  :global(.markdown-content blockquote) {
+    border-left: 3px solid var(--color-reef, #2f8f9d);
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    color: var(--color-ink-soft, #3f5667);
+    font-style: italic;
+  }
+</style>

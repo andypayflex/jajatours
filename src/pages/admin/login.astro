@@ -1,0 +1,131 @@
+---
+import bcrypt from 'bcryptjs';
+import { createSession } from '@db/queries/sessions.js';
+
+const { compareSync } = bcrypt;
+
+let error = '';
+
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  const password = form.get('password') as string;
+  const hash = process.env.ADMIN_PASSWORD_HASH || '';
+
+  if (password && hash && compareSync(password, hash)) {
+    const sessionId = createSession();
+    Astro.cookies.set('session', sessionId, {
+      httpOnly: true,
+      secure: import.meta.env.PROD,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    });
+    return Astro.redirect('/admin');
+  } else {
+    error = 'Invalid password.';
+  }
+}
+
+// If already logged in, redirect to dashboard
+const sessionId = Astro.cookies.get('session')?.value;
+if (sessionId) {
+  const { validateSession } = await import('@db/queries/sessions.js');
+  if (validateSession(sessionId)) {
+    return Astro.redirect('/admin');
+  }
+}
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login | JaJa Tours</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" />
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; }
+      body {
+        font-family: 'Outfit', sans-serif;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(145deg, #132b3a, #183745, #215364);
+        color: #122433;
+      }
+      .login-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 2.5rem 2rem;
+        width: min(400px, calc(100% - 2rem));
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      }
+      .login-card h1 {
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+      }
+      .login-card p {
+        color: #3f5667;
+        margin-bottom: 1.5rem;
+        font-size: 0.9rem;
+      }
+      label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.35rem;
+        font-size: 0.9rem;
+      }
+      input[type="password"] {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-family: inherit;
+        margin-bottom: 1rem;
+      }
+      input:focus {
+        outline: none;
+        border-color: #2f8f9d;
+        box-shadow: 0 0 0 3px rgba(47,143,157,0.2);
+      }
+      button {
+        width: 100%;
+        padding: 0.75rem;
+        border: none;
+        border-radius: 8px;
+        background: linear-gradient(130deg, #194857, #2f8f9d);
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: opacity 0.2s;
+      }
+      button:hover { opacity: 0.9; }
+      .error {
+        background: #fee2e2;
+        color: #991b1b;
+        padding: 0.6rem 0.8rem;
+        border-radius: 6px;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-card">
+      <h1>JaJa Admin</h1>
+      <p>Enter your password to continue.</p>
+      {error && <div class="error">{error}</div>}
+      <form method="POST">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required autofocus />
+        <button type="submit">Sign In</button>
+      </form>
+    </div>
+  </body>
+</html>

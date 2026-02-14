@@ -1,0 +1,102 @@
+---
+import AdminLayout from '@layouts/AdminLayout.astro';
+import { getBlogPostById, updateBlogPost, deleteBlogPost } from '@db/queries/blog.js';
+import { saveUpload } from '../../../db/uploads.js';
+import { getImageUrl } from '@db/image.js';
+
+const { id } = Astro.params;
+let post = getBlogPostById(id!);
+if (!post) return Astro.redirect('/admin/blog');
+
+let error = '';
+let success = Astro.url.searchParams.get('saved') ? 'Post saved.' : '';
+
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+
+  if (form.get('_action') === 'delete') {
+    deleteBlogPost(id!);
+    return Astro.redirect('/admin/blog');
+  }
+
+  try {
+    let mainImage = post.mainImage;
+    const imageFile = form.get('mainImage') as File | null;
+    if (imageFile && imageFile.size > 0) {
+      const upload = await saveUpload(imageFile);
+      mainImage = upload.path;
+    }
+
+    const title = form.get('title') as string;
+    const slug = (form.get('slug') as string) || title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+    updateBlogPost(id!, {
+      title,
+      slug,
+      excerpt: (form.get('excerpt') as string) || undefined,
+      body: (form.get('body') as string) || undefined,
+      mainImage,
+      mainImageAlt: (form.get('mainImageAlt') as string) || undefined,
+    });
+    post = getBlogPostById(id!)!;
+    success = 'Post updated.';
+  } catch (e: any) {
+    error = e.message;
+  }
+}
+
+const imageUrl = getImageUrl(post.mainImage);
+---
+
+<AdminLayout title={`Edit: ${post.title}`}>
+  <div class="admin-header">
+    <h1>Edit Blog Post</h1>
+    <a href="/admin/blog" class="btn btn-secondary">Back</a>
+  </div>
+
+  {error && <div class="alert alert-error">{error}</div>}
+  {success && <div class="alert alert-success">{success}</div>}
+
+  <form method="POST" enctype="multipart/form-data" class="admin-card">
+    <div class="form-grid">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="title">Title *</label>
+          <input type="text" id="title" name="title" value={post.title} required />
+        </div>
+        <div class="form-group">
+          <label for="slug">Slug</label>
+          <input type="text" id="slug" name="slug" value={post.slug} />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="excerpt">Excerpt</label>
+        <textarea id="excerpt" name="excerpt" rows="2">{post.excerpt}</textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="mainImage">Main Image</label>
+          {imageUrl && <img src={imageUrl} alt="" style="max-width:200px;border-radius:4px;margin-bottom:0.5rem" />}
+          <input type="file" id="mainImage" name="mainImage" accept="image/*" />
+        </div>
+        <div class="form-group">
+          <label for="mainImageAlt">Image Alt Text</label>
+          <input type="text" id="mainImageAlt" name="mainImageAlt" value={post.mainImageAlt || ''} />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="body">Body (Markdown)</label>
+        <textarea id="body" name="body" rows="15">{post.body}</textarea>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save Post</button>
+        <a href="/admin/blog" class="btn btn-secondary">Cancel</a>
+      </div>
+    </div>
+  </form>
+
+  <form method="POST" style="margin-top:2rem" onsubmit="return confirm('Delete this post?')">
+    <input type="hidden" name="_action" value="delete" />
+    <button type="submit" class="btn btn-danger">Delete Post</button>
+  </form>
+</AdminLayout>

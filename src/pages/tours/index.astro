@@ -1,17 +1,9 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
 import TourCard from '@components/TourCard.astro';
-import { client } from '@sanity/lib/client';
-import { allToursQuery } from '@sanity/lib/queries';
+import { getAllTours } from '@db/queries/tours.js';
 
-// Fetch all published tours
-let tours = [];
-try {
-  tours = await client.fetch(allToursQuery);
-} catch (error) {
-  console.warn('Failed to fetch tours:', error);
-  // Continue with empty tours array - will show empty state
-}
+const tours = getAllTours();
 ---
 
 <BaseLayout

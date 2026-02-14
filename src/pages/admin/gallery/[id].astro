@@ -1,0 +1,101 @@
+---
+import AdminLayout from '@layouts/AdminLayout.astro';
+import { getGalleryImageById, updateGalleryImage, deleteGalleryImage } from '@db/queries/gallery.js';
+import { getAllTours } from '@db/queries/tours.js';
+import { saveUpload } from '../../../db/uploads.js';
+import { getImageUrl } from '@db/image.js';
+
+const { id } = Astro.params;
+let img = getGalleryImageById(id!);
+if (!img) return Astro.redirect('/admin/gallery');
+
+const tours = getAllTours();
+let error = '';
+let success = Astro.url.searchParams.get('saved') ? 'Saved.' : '';
+
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+
+  if (form.get('_action') === 'delete') {
+    deleteGalleryImage(id!);
+    return Astro.redirect('/admin/gallery');
+  }
+
+  try {
+    let image = img.image;
+    const imageFile = form.get('image') as File | null;
+    if (imageFile && imageFile.size > 0) {
+      const upload = await saveUpload(imageFile);
+      image = upload.path;
+    }
+
+    const parseList = (val: string | null): string[] | undefined => {
+      if (!val) return undefined;
+      const items = val.split('\n').map(s => s.trim()).filter(Boolean);
+      return items.length > 0 ? items : undefined;
+    };
+
+    updateGalleryImage(id!, {
+      image,
+      alt: (form.get('alt') as string) || img.alt,
+      caption: (form.get('caption') as string) || undefined,
+      tourId: (form.get('tourId') as string) || undefined,
+      tags: parseList(form.get('tags') as string),
+    });
+    img = getGalleryImageById(id!)!;
+    success = 'Updated.';
+  } catch (e: any) {
+    error = e.message;
+  }
+}
+
+const imageUrl = getImageUrl(img.image);
+---
+
+<AdminLayout title="Edit Gallery Image">
+  <div class="admin-header">
+    <h1>Edit Gallery Image</h1>
+    <a href="/admin/gallery" class="btn btn-secondary">Back</a>
+  </div>
+
+  {error && <div class="alert alert-error">{error}</div>}
+  {success && <div class="alert alert-success">{success}</div>}
+
+  <form method="POST" enctype="multipart/form-data" class="admin-card">
+    <div class="form-grid">
+      {imageUrl && <img src={imageUrl} alt={img.alt} style="max-width:400px;border-radius:8px" />}
+      <div class="form-group">
+        <label for="image">Replace Image</label>
+        <input type="file" id="image" name="image" accept="image/*" />
+      </div>
+      <div class="form-group">
+        <label for="alt">Alt Text *</label>
+        <input type="text" id="alt" name="alt" value={img.alt} required />
+      </div>
+      <div class="form-group">
+        <label for="caption">Caption</label>
+        <input type="text" id="caption" name="caption" value={img.caption || ''} />
+      </div>
+      <div class="form-group">
+        <label for="tourId">Tour</label>
+        <select id="tourId" name="tourId">
+          <option value="">None</option>
+          {tours.map(t => <option value={t.id} selected={t.id === img.tourId}>{t.title}</option>)}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="tags">Tags (one per line)</label>
+        <textarea id="tags" name="tags" rows="2">{img.tags?.join('\n')}</textarea>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="/admin/gallery" class="btn btn-secondary">Cancel</a>
+      </div>
+    </div>
+  </form>
+
+  <form method="POST" style="margin-top:2rem" onsubmit="return confirm('Delete this image?')">
+    <input type="hidden" name="_action" value="delete" />
+    <button type="submit" class="btn btn-danger">Delete Image</button>
+  </form>
+</AdminLayout>

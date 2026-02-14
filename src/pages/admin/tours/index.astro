@@ -1,0 +1,49 @@
+---
+import AdminLayout from '@layouts/AdminLayout.astro';
+import { getAllTours } from '@db/queries/tours.js';
+
+const tours = getAllTours();
+---
+
+<AdminLayout title="Tours">
+  <div class="admin-header">
+    <h1>Tours</h1>
+    <a href="/admin/tours/new" class="btn btn-primary">New Tour</a>
+  </div>
+
+  {tours.length > 0 ? (
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Category</th>
+          <th>Duration</th>
+          <th>Price</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {tours.map(tour => (
+          <tr>
+            <td><a href={`/admin/tours/${tour.id}`}>{tour.title}</a></td>
+            <td>{tour.category || '—'}</td>
+            <td>{tour.duration || '—'}</td>
+            <td>
+              {tour.pricing
+                ? `${tour.pricing.currency === 'ZAR' ? 'R' : tour.pricing.currency}${tour.pricing.amount}`
+                : '—'}
+            </td>
+            <td>
+              <a href={`/admin/tours/${tour.id}`} class="btn btn-secondary btn-sm">Edit</a>
+              <a href={`/tours/${tour.slug}`} class="btn btn-secondary btn-sm" target="_blank">View</a>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <div class="admin-card">
+      <p>No tours yet. <a href="/admin/tours/new">Create your first tour.</a></p>
+    </div>
+  )}
+</AdminLayout>

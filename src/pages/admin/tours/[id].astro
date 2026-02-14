@@ -1,0 +1,341 @@
+---
+import AdminLayout from '@layouts/AdminLayout.astro';
+import { getTourById, updateTour, deleteTour } from '@db/queries/tours.js';
+import { saveUpload } from '../../../db/uploads.js';
+import { getImageUrl } from '@db/image.js';
+
+const { id } = Astro.params;
+let tour = getTourById(id!);
+
+if (!tour) {
+  return Astro.redirect('/admin/tours');
+}
+
+let error = '';
+let success = Astro.url.searchParams.get('saved') ? 'Tour saved successfully.' : '';
+
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+
+  // Handle delete
+  if (form.get('_action') === 'delete') {
+    deleteTour(id!);
+    return Astro.redirect('/admin/tours');
+  }
+
+  try {
+    // Handle image upload
+    let mainImage = tour.mainImage;
+    const imageFile = form.get('mainImage') as File | null;
+    if (imageFile && imageFile.size > 0) {
+      const upload = await saveUpload(imageFile);
+      mainImage = upload.path;
+    }
+
+    const parseList = (val: string | null): string[] | undefined => {
+      if (!val) return undefined;
+      const items = val.split('\n').map(s => s.trim()).filter(Boolean);
+      return items.length > 0 ? items : undefined;
+    };
+
+    // Parse itinerary
+    const itineraryCount = parseInt(form.get('itineraryCount') as string) || 0;
+    const itinerary = [];
+    for (let i = 0; i < itineraryCount; i++) {
+      const title = form.get(`itin_title_${i}`) as string;
+      if (!title) continue;
+      itinerary.push({
+        dayNumber: parseInt(form.get(`itin_day_${i}`) as string) || (i + 1),
+        title,
+        description: (form.get(`itin_desc_${i}`) as string) || undefined,
+        activities: parseList(form.get(`itin_activities_${i}`) as string),
+        meals: {
+          breakfast: form.get(`itin_breakfast_${i}`) === 'on',
+          lunch: form.get(`itin_lunch_${i}`) === 'on',
+          dinner: form.get(`itin_dinner_${i}`) === 'on',
+        },
+        accommodation: (form.get(`itin_accommodation_${i}`) as string) || undefined,
+      });
+    }
+
+    // Parse dates
+    const datesCount = parseInt(form.get('datesCount') as string) || 0;
+    const availableDates = [];
+    for (let i = 0; i < datesCount; i++) {
+      const date = form.get(`date_${i}`) as string;
+      if (date) availableDates.push({ date, spotsAvailable: parseInt(form.get(`date_spots_${i}`) as string) || 0 });
+    }
+
+    // Parse pricing
+    const priceAmount = parseFloat(form.get('priceAmount') as string);
+    const pricing = priceAmount ? {
+      amount: priceAmount,
+      currency: (form.get('priceCurrency') as string) || 'ZAR',
+      perPerson: form.get('pricePerPerson') === 'on',
+    } : undefined;
+
+    const gsMin = parseInt(form.get('groupSizeMin') as string);
+    const gsMax = parseInt(form.get('groupSizeMax') as string);
+    const groupSize = (gsMin || gsMax) ? { min: gsMin || 1, max: gsMax || 10 } : undefined;
+
+    const safetyInfo = {
+      difficultyLevel: (form.get('difficultyLevel') as string) || undefined,
+      fitnessRequirements: (form.get('fitnessRequirements') as string) || undefined,
+      risks: parseList(form.get('risks') as string),
+      equipmentProvided: parseList(form.get('equipmentProvided') as string),
+      whatToBring: parseList(form.get('whatToBring') as string),
+      guideCertifications: (form.get('guideCertifications') as string) || undefined,
+    };
+    const hasSafety = Object.values(safetyInfo).some(v => v !== undefined);
+
+    const title = form.get('title') as string;
+    const slug = (form.get('slug') as string) || title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+    updateTour(id!, {
+      title,
+      slug,
+      excerpt: (form.get('excerpt') as string) || undefined,
+      body: (form.get('body') as string) || undefined,
+      category: (form.get('category') as string) || undefined,
+      duration: (form.get('duration') as string) || undefined,
+      mainImage,
+      mainImageAlt: (form.get('mainImageAlt') as string) || undefined,
+      pricing,
+      groupSize,
+      inclusions: parseList(form.get('inclusions') as string),
+      exclusions: parseList(form.get('exclusions') as string),
+      itinerary: itinerary.length > 0 ? itinerary : undefined,
+      safetyInfo: hasSafety ? safetyInfo : undefined,
+      availableDates: availableDates.length > 0 ? availableDates : undefined,
+      tags: parseList(form.get('tags') as string),
+    });
+
+    tour = getTourById(id!)!;
+    success = 'Tour updated successfully.';
+  } catch (e: any) {
+    error = e.message || 'Failed to update tour.';
+  }
+}
+
+const imageUrl = getImageUrl(tour.mainImage);
+---
+
+<AdminLayout title={`Edit: ${tour.title}`}>
+  <div class="admin-header">
+    <h1>Edit Tour</h1>
+    <div style="display:flex;gap:0.5rem">
+      <a href="/admin/tours" class="btn btn-secondary">Back</a>
+      <a href={`/tours/${tour.slug}`} class="btn btn-secondary" target="_blank">View Live</a>
+    </div>
+  </div>
+
+  {error && <div class="alert alert-error">{error}</div>}
+  {success && <div class="alert alert-success">{success}</div>}
+
+  <form method="POST" enctype="multipart/form-data" class="admin-card">
+    <div class="form-grid">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="title">Title *</label>
+          <input type="text" id="title" name="title" value={tour.title} required />
+        </div>
+        <div class="form-group">
+          <label for="slug">Slug</label>
+          <input type="text" id="slug" name="slug" value={tour.slug} />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="excerpt">Excerpt</label>
+        <textarea id="excerpt" name="excerpt" rows="2">{tour.excerpt}</textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select id="category" name="category">
+            <option value="">Select...</option>
+            <option value="overlanding" selected={tour.category === 'overlanding'}>Overlanding</option>
+            <option value="diving" selected={tour.category === 'diving'}>Diving</option>
+            <option value="rafting" selected={tour.category === 'rafting'}>Rafting</option>
+            <option value="camping" selected={tour.category === 'camping'}>Camping</option>
+            <option value="multi-activity" selected={tour.category === 'multi-activity'}>Multi-Activity</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="duration">Duration</label>
+          <input type="text" id="duration" name="duration" value={tour.duration || ''} />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="mainImage">Main Image</label>
+          {imageUrl && <img src={imageUrl} alt="" style="max-width:200px;border-radius:4px;margin-bottom:0.5rem" />}
+          <input type="file" id="mainImage" name="mainImage" accept="image/*" />
+          <small>Leave empty to keep current image</small>
+        </div>
+        <div class="form-group">
+          <label for="mainImageAlt">Image Alt Text</label>
+          <input type="text" id="mainImageAlt" name="mainImageAlt" value={tour.mainImageAlt || ''} />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="body">Body (Markdown)</label>
+        <textarea id="body" name="body" rows="10">{tour.body}</textarea>
+        <small>Supports Markdown: **bold**, *italic*, ## headings, - lists, [links](url)</small>
+      </div>
+
+      <h3>Pricing</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="priceAmount">Amount</label>
+          <input type="number" id="priceAmount" name="priceAmount" step="0.01" value={tour.pricing?.amount || ''} />
+        </div>
+        <div class="form-group">
+          <label for="priceCurrency">Currency</label>
+          <select id="priceCurrency" name="priceCurrency">
+            <option value="ZAR" selected={tour.pricing?.currency === 'ZAR' || !tour.pricing}>ZAR (R)</option>
+            <option value="USD" selected={tour.pricing?.currency === 'USD'}>USD ($)</option>
+            <option value="EUR" selected={tour.pricing?.currency === 'EUR'}>EUR</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label><input type="checkbox" name="pricePerPerson" checked={tour.pricing?.perPerson !== false} /> Per person</label>
+      </div>
+
+      <h3>Group Size</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="groupSizeMin">Min</label>
+          <input type="number" id="groupSizeMin" name="groupSizeMin" min="1" value={tour.groupSize?.min || ''} />
+        </div>
+        <div class="form-group">
+          <label for="groupSizeMax">Max</label>
+          <input type="number" id="groupSizeMax" name="groupSizeMax" min="1" value={tour.groupSize?.max || ''} />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="inclusions">Inclusions (one per line)</label>
+          <textarea id="inclusions" name="inclusions" rows="4">{tour.inclusions?.join('\n')}</textarea>
+        </div>
+        <div class="form-group">
+          <label for="exclusions">Exclusions (one per line)</label>
+          <textarea id="exclusions" name="exclusions" rows="4">{tour.exclusions?.join('\n')}</textarea>
+        </div>
+      </div>
+
+      <h3>Itinerary</h3>
+      <div id="itinerary-container"></div>
+      <input type="hidden" id="itineraryCount" name="itineraryCount" value="0" />
+      <button type="button" class="btn-add" onclick="addItineraryDay()">+ Add Day</button>
+
+      <h3>Available Dates</h3>
+      <div id="dates-container"></div>
+      <input type="hidden" id="datesCount" name="datesCount" value="0" />
+      <button type="button" class="btn-add" onclick="addDate()">+ Add Date</button>
+
+      <h3>Safety & Requirements</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="difficultyLevel">Difficulty Level</label>
+          <select id="difficultyLevel" name="difficultyLevel">
+            <option value="">Select...</option>
+            <option value="easy" selected={tour.safetyInfo?.difficultyLevel === 'easy'}>Easy</option>
+            <option value="moderate" selected={tour.safetyInfo?.difficultyLevel === 'moderate'}>Moderate</option>
+            <option value="challenging" selected={tour.safetyInfo?.difficultyLevel === 'challenging'}>Challenging</option>
+            <option value="strenuous" selected={tour.safetyInfo?.difficultyLevel === 'strenuous'}>Strenuous</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="guideCertifications">Guide Certifications</label>
+          <input type="text" id="guideCertifications" name="guideCertifications" value={tour.safetyInfo?.guideCertifications || ''} />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="fitnessRequirements">Fitness Requirements</label>
+        <textarea id="fitnessRequirements" name="fitnessRequirements" rows="2">{tour.safetyInfo?.fitnessRequirements}</textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="risks">Risks (one per line)</label>
+          <textarea id="risks" name="risks" rows="3">{tour.safetyInfo?.risks?.join('\n')}</textarea>
+        </div>
+        <div class="form-group">
+          <label for="whatToBring">What to Bring (one per line)</label>
+          <textarea id="whatToBring" name="whatToBring" rows="3">{tour.safetyInfo?.whatToBring?.join('\n')}</textarea>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="equipmentProvided">Equipment Provided (one per line)</label>
+        <textarea id="equipmentProvided" name="equipmentProvided" rows="3">{tour.safetyInfo?.equipmentProvided?.join('\n')}</textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="tags">Tags (one per line)</label>
+        <textarea id="tags" name="tags" rows="2">{tour.tags?.join('\n')}</textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save Tour</button>
+        <a href="/admin/tours" class="btn btn-secondary">Cancel</a>
+      </div>
+    </div>
+  </form>
+
+  <!-- Delete form -->
+  <form method="POST" style="margin-top:2rem" onsubmit="return confirm('Delete this tour? This cannot be undone.')">
+    <input type="hidden" name="_action" value="delete" />
+    <button type="submit" class="btn btn-danger">Delete Tour</button>
+  </form>
+
+  <script is:inline define:vars={{ existingItinerary: tour.itinerary || [], existingDates: tour.availableDates || [] }}>
+    let itinCount = 0;
+    let dateCount = 0;
+
+    function addItineraryDay(data) {
+      const container = document.getElementById('itinerary-container');
+      const i = itinCount++;
+      document.getElementById('itineraryCount').value = itinCount;
+      const d = data || {};
+      const html = `
+        <div class="itinerary-day-card" id="itin-${i}">
+          <h4>Day ${d.dayNumber || i + 1} <button type="button" class="btn-remove" onclick="this.closest('.itinerary-day-card').remove()">Remove</button></h4>
+          <input type="hidden" name="itin_day_${i}" value="${d.dayNumber || i + 1}" />
+          <div class="form-group"><label>Title</label><input type="text" name="itin_title_${i}" value="${(d.title || '').replace(/"/g, '&quot;')}" required /></div>
+          <div class="form-group"><label>Description</label><textarea name="itin_desc_${i}" rows="2">${d.description || ''}</textarea></div>
+          <div class="form-group"><label>Activities (one per line)</label><textarea name="itin_activities_${i}" rows="2">${(d.activities || []).join('\n')}</textarea></div>
+          <div style="display:flex;gap:1rem;margin:0.5rem 0">
+            <label><input type="checkbox" name="itin_breakfast_${i}" ${d.meals?.breakfast ? 'checked' : ''} /> Breakfast</label>
+            <label><input type="checkbox" name="itin_lunch_${i}" ${d.meals?.lunch ? 'checked' : ''} /> Lunch</label>
+            <label><input type="checkbox" name="itin_dinner_${i}" ${d.meals?.dinner ? 'checked' : ''} /> Dinner</label>
+          </div>
+          <div class="form-group"><label>Accommodation</label><input type="text" name="itin_accommodation_${i}" value="${(d.accommodation || '').replace(/"/g, '&quot;')}" /></div>
+        </div>`;
+      container.insertAdjacentHTML('beforeend', html);
+    }
+
+    function addDate(data) {
+      const container = document.getElementById('dates-container');
+      const i = dateCount++;
+      document.getElementById('datesCount').value = dateCount;
+      const d = data || {};
+      const dateVal = d.date ? d.date.split('T')[0] : '';
+      const html = `
+        <div class="dynamic-list-item" id="date-${i}">
+          <input type="date" name="date_${i}" value="${dateVal}" required />
+          <input type="number" name="date_spots_${i}" value="${d.spotsAvailable || 0}" placeholder="Spots" min="0" style="width:100px" />
+          <button type="button" class="btn-remove" onclick="this.closest('.dynamic-list-item').remove()">Remove</button>
+        </div>`;
+      container.insertAdjacentHTML('beforeend', html);
+    }
+
+    // Populate existing data
+    existingItinerary.forEach(day => addItineraryDay(day));
+    existingDates.forEach(date => addDate(date));
+  </script>
+</AdminLayout>

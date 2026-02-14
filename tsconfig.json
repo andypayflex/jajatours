@@ -7,7 +7,7 @@
       "@components/*": ["src/components/*"],
       "@assets/*": ["src/assets/*"],
       "@styles/*": ["src/styles/*"],
-      "@sanity/*": ["src/sanity/*"]
+      "@db/*": ["src/db/*"]
     }
   },
   "include": [".astro/types.d.ts", "**/*"],

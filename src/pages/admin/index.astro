@@ -1,0 +1,58 @@
+---
+import AdminLayout from '@layouts/AdminLayout.astro';
+import { getTourCount } from '@db/queries/tours.js';
+import { getBlogPostCount } from '@db/queries/blog.js';
+import { getGalleryImageCount } from '@db/queries/gallery.js';
+import { getTestimonialCount } from '@db/queries/testimonials.js';
+import { getContactSubmissionCount, getInquirySubmissionCount } from '@db/queries/submissions.js';
+
+const tourCount = getTourCount();
+const blogCount = getBlogPostCount();
+const galleryCount = getGalleryImageCount();
+const testimonialCount = getTestimonialCount();
+const contactCount = getContactSubmissionCount();
+const inquiryCount = getInquirySubmissionCount();
+---
+
+<AdminLayout title="Dashboard">
+  <div class="admin-header">
+    <h1>Dashboard</h1>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-number">{tourCount}</div>
+      <div class="stat-label">Tours</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">{blogCount}</div>
+      <div class="stat-label">Blog Posts</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">{galleryCount}</div>
+      <div class="stat-label">Gallery Images</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">{testimonialCount}</div>
+      <div class="stat-label">Testimonials</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">{contactCount}</div>
+      <div class="stat-label">Contact Messages</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">{inquiryCount}</div>
+      <div class="stat-label">Tour Inquiries</div>
+    </div>
+  </div>
+
+  <div class="admin-card">
+    <h2 style="margin-bottom: 0.75rem;">Quick Actions</h2>
+    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+      <a href="/admin/tours/new" class="btn btn-primary">New Tour</a>
+      <a href="/admin/blog/new" class="btn btn-primary">New Blog Post</a>
+      <a href="/admin/gallery/new" class="btn btn-primary">Upload Image</a>
+      <a href="/admin/testimonials/new" class="btn btn-primary">New Testimonial</a>
+    </div>
+  </div>
+</AdminLayout>
