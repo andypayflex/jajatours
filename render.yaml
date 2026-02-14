@@ -10,8 +10,6 @@ services:
         value: production
       - key: HOST
         value: 0.0.0.0
-      - key: PORT
-        value: 4321
       - key: DATABASE_PATH
         value: /data/jajatours.db
       - key: UPLOAD_DIR
